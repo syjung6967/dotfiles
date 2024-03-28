@@ -11,3 +11,6 @@
 	path = .vim/pack/git-plugins/start/coc.nvim
 	url = https://github.com/neoclide/coc.nvim
 	branch = release
+[submodule ".version_managers/update-golang"]
+	path = .version_managers/update-golang
+	url = https://github.com/udhos/update-golang
