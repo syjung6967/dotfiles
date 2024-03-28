@@ -1,0 +1,13 @@
+[submodule ".vim/pack/git-plugins/start/fugitive"]
+	path = .vim/pack/git-plugins/start/fugitive
+	url = https://tpope.io/vim/fugitive.git
+[submodule ".vim/pack/git-plugins/start/copilot.vim"]
+	path = .vim/pack/git-plugins/start/copilot.vim
+	url = https://github.com/github/copilot.vim.git
+[submodule ".vim/pack/git-plugins/start/ale"]
+	path = .vim/pack/git-plugins/start/ale
+	url = https://github.com/dense-analysis/ale.git
+[submodule ".vim/pack/git-plugins/start/coc.nvim"]
+	path = .vim/pack/git-plugins/start/coc.nvim
+	url = https://github.com/neoclide/coc.nvim
+	branch = release

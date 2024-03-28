@@ -1,0 +1,499 @@
+" ======================================
+" vimrc script applicable to TUI VIM
+"
+" Jed, syjung6967@gmail.com.
+"
+" SPDX-License-Identifier: ISC
+" ======================================
+"
+" First of all, fetch the repository to ~/.vim:
+"   cd ~/.vim
+"   git init
+"   git remote add origin https://github.com/syjung6967/vimrc.git
+"   git fetch origin
+"   git checkout main
+"
+" To load this vimrc script, add the following line to end of your ~/.vimrc:
+"   " Include vimrc file.
+"   source $HOME/.vim/vimrc
+"
+" This vimrc script uses as few plugins as possible to avoid relying on them.
+"
+" Plugins which this vimrc script uses:
+" - git plugin: vim-fugitive / vim-gitgutter
+" - language client: ALE / CoC
+" - AI tool: copilot / vim-ai
+"
+" Plugins which this vimrc script does NOT use:
+" - community-driven distribution of Vim: Neovim / SpaceVim / MacVim
+"   TUI lover does not need extra features of them.
+" - plugin manager: vim-plug / Pathogen / Vundle / Dein
+"   Useful but not necessary.
+" - file system explorer: NERDTree
+"   Use netrw for simple job or GUI explorer for complicated jobs.
+" - glyphs for developer: vim-devicons
+"   The icons are confusing to understand.
+" - rich status line and tab line: vim-airline / vim-flagship
+"   Maybe necessary if you use multiple status lines and tab lines.
+" - fuzzy finder: fzf / ctrlp
+"   Use **/*<TAB> for searching files or ripgrep for searching contents.
+"
+" References:
+" POSIX specification for vi
+"   https://pubs.opengroup.org/onlinepubs/9699919799/utilities/vi.html
+" POSIX specification for ex
+"   https://pubs.opengroup.org/onlinepubs/9699919799/utilities/ex.html
+" Vim help files
+"   https://vimhelp.org/
+"
+" Cheat sheet for search and replace
+"   https://vim.fandom.com/wiki/Search_and_replace
+" Magic characters
+"   https://vimdoc.sourceforge.net/htmldoc/change.html#:s%
+"
+" vi Command Help Guide
+"   https://www.jeffw.com/vi/vi_help.txt
+" Vim Tips Wiki
+"   https://vim.fandom.com/wiki/Category:VimTip
+" ANSI Escape Sequences
+"   https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
+
+"
+" --- simple (but powerful) commands -------------------------------------------
+"
+" <C-O> / <C-I> or <Tab> " Undo/Redo cursor position.
+" 0 <C-V> <move> <modifiy sth> <Esc> " Add comment symbol within visual block on each front line.
+" . " Repeat last change, with count replaced with [count].
+" @: " Repeat last command-line [count] times.
+"
+" :echomsg / :messages " eval expression and print the result.
+" :...<C-B> / :...<C-E> " Move cursor to frontmost / backmost.
+"
+" 'quickfix' and 'location' lists
+" :Ggrep / Glgrep " Remember result for `git grep` in quickfix list / location list.
+" :cw / :lw " Open quickfix list / location list if result exists.
+" :ccl / :lcl " Close quickfix list / location list.
+" :cc / :ll " Display match for current cursor on the current buffer selected by quickfix list / location list.
+" :cbe / :lbe " Display match before current cursor on the current buffer selected by quickfix list / location list.
+" :caf / :laf " Display match after current cursor on the current buffer selected by quickfix list / location list.
+" :cnf / :lnf " Display first match from the next file of file selected by quickfix list / location list.
+" :cNf / :lNf " Display last match from the previous file of file selected by quickfix list / location list.
+" :cdo {cmd} / :ldo {cmd} " Execute {cmd} in each valid entry in the quickfix list / location list.
+"                         " e.g., :cdo s/old/new/g | w
+" :cfdo {cmd} / :lfdo {cmd} " Execute {cmd} in each file in the quickfix list / location list.
+" :[n]chi / [n]lhi " Show the list of quickfix list / location list.
+"                  " Select n'th quickfix lists / location list as the current list.
+"
+" :Te " Open netrw directory browser in new tab. (other open option does not work well)
+" :ls " List buffers.
+" :tabe +<N>buf " Open N-th buffer in new tab.
+" :tabe # " Undo last accessed tab.
+" :%bdel | e# " Clear all buffers except for the buffer opened at current tab.
+
+"
+" --- miscellaneous ------------------------------------------------------------
+"
+" - Case-insensitive match for grep: add '\c' to pattern anywhere.
+
+"
+" --- autocommands -------------------------------------------------------------
+"
+
+augroup MyAutocommandGroup
+  autocmd!
+
+  " Overwrite predefined ColorScheme as custom.
+  autocmd ColorScheme * highlight CursorLine term=reverse cterm=none ctermbg=239
+  autocmd ColorScheme * highlight CursorLineNr term=reverse cterm=none ctermbg=239
+  autocmd ColorScheme * highlight CursorColumn term=reverse cterm=none ctermbg=233
+  autocmd ColorScheme * highlight ColorColumn term=reverse cterm=none ctermbg=233
+
+  " Restore all cursor positions in previous editing session.
+  " (restore-cursor from usr_05.txt)
+  autocmd BufReadPost *
+  \   if line("'\"") >= 1 && line("'\"") <= line("$") && &filetype !~# 'commit'
+  \ |   execute "normal! g`\""
+  \ | endif
+
+  " Remove trailing whitespaces when the buffer is wrote.
+  let g:remove_trailing_whitespaces = 1
+  autocmd BufWritePre *
+  \   if g:remove_trailing_whitespaces && !&binary && &filetype != 'diff'
+  \ |   keeppatterns %s/\s\+$//ge
+  \ | endif
+
+  " Refresh message line which contains ruler, to hide buffer update message
+  " when chaning tab.
+  autocmd BufEnter * redraw
+
+  " Trigger omni completion whenever '[[:alpha:]]' or '.' keystrokes in insert mode.
+  " Checking v:count makes repeat command (".") works properly. Without this,
+  " <C-X><C-O> is added if repeat command contains entering Insert mode.
+  "autocmd InsertCharPre *
+  "\  if !pumvisible() && match(v:char, '[[:alpha:].]') != -1 && v:count == 0
+  "\ |   call feedkeys("\<C-X>\<C-O>", "n")
+  "\ | endif
+
+  " Check if any buffers were changed outside of Vim when you act.
+  autocmd CursorMoved * checktime
+augroup END
+
+"
+" --- color scheme -------------------------------------------------------------
+"
+
+" Turn on default syntax highlighting.
+syntax on
+
+" Set number of colors. See color palette from:
+"   https://commons.wikimedia.org/wiki/File:Xterm_256color_chart.svg
+set t_Co=256
+
+" Draw visual bell at the col 6-7 (which fits line number margin) on the
+" current line instead of beeping.
+set visualbell t_vb=7[6G🔔8
+
+" Enable highlighting cursor line and screen column.
+set cursorline cursorlineopt=both
+set cursorcolumn
+
+" Enable highlighting additional screen columns.
+set colorcolumn=81
+"set lines=40 columns=125 " This setting occurs bug on PowerShell.
+
+" Load color scheme.
+" Screenshots: https://github.com/vim/colorschemes/wiki/Remake-sampler-%E2%80%94-256-colors
+colorscheme evening
+"colorscheme desert
+
+"
+" --- format -------------------------------------------------------------------
+"
+
+set encoding=utf-8 termencoding=utf-8
+set fileformats=unix,dos,mac " supported formats
+set nobomb " Remove BOM.
+
+" Preserve eol setting for each file.
+"
+" Editors have different setting for eol character ('\n')
+" By defaults Vim adds eol but VS Code does not.
+" Do not check this annoying POSIX conformance.
+"
+" See also: https://thoughtbot.com/blog/no-newline-at-end-of-file
+set nofixendofline
+
+"
+" --- files --------------------------------------------------------------------
+"
+
+" Disable swap.
+set noswapfile
+
+" Enable backup.
+set backup backupdir=~/.vim/backup,.
+autocmd BufWritePre *
+\   let &backupext = '-' .. strftime("%F_%T") .. '~' "multiple versions
+
+" Keep oldest version of file.
+"set patchmode=.orig
+
+" Enable persistent undo until poweroff.
+set undofile undodir=/tmp
+
+" Enable cscope for Linux develop environment.
+"set cscopetag
+
+"
+" --- layout -------------------------------------------------------------------
+"
+
+" Set locale.
+language POSIX
+
+" Set line numbers.
+set number relativenumber numberwidth=8
+
+" keep N lines off the edges.
+set scrolloff=5
+
+" Set the title of the window to the value of 'titlestring'.
+set title
+
+" Set popup menu size.
+set pumwidth=30 pumheight=0
+
+" Show the commands being typed.
+set showcmd
+
+" Always show status line.
+set laststatus=2 statusline=
+let g:modemap = {
+\ 'n': 'NORMAL',
+\ 'v': 'VISUAL',
+\ 'V': 'VISUAL LN',
+\ '': 'VISUAL BLK',
+\ 's': 'SELECT',
+\ 'S': 'SELECT LN',
+\ '': 'SELECT BLK',
+\ 'i': 'INSERT',
+\ 'R': 'REPLACE',
+\ 'c': 'COMMAND',
+\}
+
+" Configure status line.
+set statusline+=%F " Full path to file name (%F), file name only (%t)
+set statusline+=%m " modified flag
+set statusline+=\ [%{len(&fileencoding)?&fileencoding.',':''}
+set statusline+=%{&fileformat}]
+set statusline+=\ [%{len(&filetype)?&filetype:'none'}]
+set statusline+=\ %r " read only flag
+
+set statusline+=%= " left/right separator
+
+set statusline+=\ %{g:modemap[mode()]} " mode
+set statusline+=\ %{&expandtab?'SPC':'TAB'} " indentation style
+set statusline+=\ %{&tabstop}SPC " tab spacing
+set statusline+=\ %{g:remove_trailing_whitespaces?'␡':'\ '} " auto-remove trailing whitespaces
+
+set statusline+=\ %10(%l:%v%) " cursor line:column position
+set statusline+=\ [%P] " percent through file (always 3 in length)
+set statusline+=\ ≡
+set statusline+=\ %LL\ %{wordcount().words}W " total lines and words in the current buffer
+
+" Disable showing ruler at bottom right. (Default ruler format: %l,%c%V%=%P)
+set noruler
+
+" Disable showing the current mode message.
+set noshowmode
+
+" Change the style for hit-enter prompts caused by file messages.
+" - a: shorten buffer related info.
+" - T: truncate message in the mid if it is too long to fit on the command line.
+" - I: don't give the intro message when starting Vim |:intro|.
+" - c: don't give |ins-completion-menu| messages.
+set shortmess=aTIc
+
+" Always show tab.
+" - <n>gt: go to <n>-th tab.
+" - g<Tab>: go to last accessed tab.
+" - :tabs: List the tab pages and the windows they contain.
+set showtabline=2
+
+" Set netrw directory browser.
+let g:netrw_liststyle=3 " tree style listing
+"vertical resize 30
+let g:netrw_winsize=-35 " initial size of new windows
+let g:netrw_banner=0 " disable banner
+
+"
+" --- mapping ------------------------------------------------------------------
+"
+" FAQ:
+"
+" 1. How can capture <S-Tab>, <C-Space> in insert mode?
+"     Insert <C-V> {your key} to check the key combination you want to capture.
+"     For example, <Up> is mapped to OA so the key combination is <Esc>OA.
+"     Key combination captured by terminal emulator is unable to use.
+"     For example, <C-Tab> is used to switch tab managed by terminal emulator.
+"
+"     In detail, VIM considers code position for <C-{c}> as char2nr({c})-0x40.
+"     Thus if its value is less than 0x40 it cannot be represented in VIM.
+
+" Fix arrow key input.
+noremap <Esc>OA <Up>
+noremap! <Esc>OA <Up>
+noremap <Esc>OB <Down>
+noremap! <Esc>OB <Down>
+noremap <Esc>OC <Right>
+noremap! <Esc>OC <Right>
+noremap <Esc>OD <Left>
+noremap! <Esc>OD <Left>
+
+" Disable displaying command-line window and recording commands.
+nnoremap q <Nop>
+
+" Toggle displaying line numbers and tab indicator.
+" Also, make vim clipboard-friendly.
+nnoremap <silent> <F1> :set invnumber invrelativenumber invlist invpaste<CR>
+
+" Format the text that is selected in visual mode.
+vnoremap <F2> gq
+
+" Reload vimrc and save the current session to current directory.
+nnoremap <F10>
+\ :source $MYVIMRC<CR>
+\ :execute 'mksession! ' . v:this_session<CR>
+
+" Turn off highlighting search pattern ten redraw screen forcely.
+nnoremap <silent> <C-L> :set nohlsearch<CR>:redraw!<CR>
+
+" Turn on highlighting search pattern then searching.
+nnoremap n :set hlsearch<CR>n
+nnoremap N :set hlsearch<CR>N
+
+" Toggle netrw directory browser.
+nnoremap <F3> :Lexplore<CR>
+
+" Toggle indentation style.
+nnoremap <silent><S-Tab> :set invexpandtab<CR>
+
+" Toggle auto-remove trailing whitespaces.
+nnoremap <silent><C-_> :let g:remove_trailing_whitespaces=!g:remove_trailing_whitespaces<CR>
+
+" While auto completion, make <Tab> to select next candidate.
+inoremap <expr> <Tab> pumvisible() ? "\<C-N>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-P>" : "\<S-Tab>"
+inoremap <expr> <ESC>[Z pumvisible() ? "\<C-P>" : "\<S-Tab>"
+
+" Copy text to clipboard in visual mode.
+vnoremap <silent> <Leader>c "+y
+
+"
+" --- mechanics ----------------------------------------------------------------
+"
+
+set wrap nolinebreak
+set nofoldenable
+set history=500 undolevels=1000
+set list listchars=tab:┊\ ,trail:·,extends:»
+
+" Set threshold for reporting number of lines changed.
+set report=0
+
+" Set highlighting for search results.
+set hlsearch incsearch
+match Todo /\s\+$/ " Highlight trailing whitespaces.
+
+" Set indentation style.
+set autoindent indentexpr=""
+set noexpandtab " TAB (with 'no'); SPACE (without 'no')
+set tabstop=8 " Number of spaces that a <Tab> in the file counts for.
+set shiftwidth=0 " Use the same value as &tabstop
+
+" Set options to work <Leader> works intended.
+set noesckeys
+set notimeout ttimeout
+
+" Enable command completion.
+set wildmenu wildmode=list:longest
+
+" Enable mouse on Normal mode and Visual mode. (Helpful for non-vimer)
+set mouse=nv
+
+" Enable syntax checking and code completion. 'set formatoptions' does not
+" work the way you want due to ftplugin.
+" (This is feature: see https://github.com/vim/vim/issues/4680)
+filetype plugin on
+set omnifunc=syntaxcomplete#Complete
+
+" Set completion option.
+set completeopt=menuone,popup,noinsert,noselect
+
+" Add match pairs. (Same character pair is not allowed, e.g., `:`)
+set matchpairs+=<:>
+
+" Do not influence to words typed before entering insert mode.
+set backspace=""
+
+" Do not restore options and mappings when restoring session.
+set sessionoptions-=options
+
+" Change current working directory to where accessed file is located.
+set autochdir
+
+" Set program to use for grepping.
+set grepprg=rg\ -n
+
+"
+" --- menu ---------------------------------------------------------------------
+"
+
+source $VIMRUNTIME/menu.vim
+set wildcharm=<C-Z>
+map <F4> :emenu <C-Z>
+
+"
+" --- LSP support --------------------------------------------------------------
+"
+" Q: What is the difference between ALE and CoC?
+" A: linter for ALE, completion for CoC.
+"    https://www.reddit.com/r/vim/comments/fziffu/comment/fn6pq6k
+"
+" Q: ALEFindReferences does not show matched lines.
+" A: It is tsserver only feature. Use ALE together with CoC.
+"    https://github.com/dense-analysis/ale/blob/master/autoload/ale/references.vim
+"
+
+" ALE (fixer & linter & completion)
+"source $HOME/.vim/ale.vim
+
+" ALE (fixer) and CoC (linter & completion)
+source $HOME/.vim/ale-fixer-only.vim
+source $HOME/.vim/coc.vim
+
+"
+" --- Github Copilot -----------------------------------------------------------
+"
+
+" Remap the default key bindings.
+" Meta key does not support on Mac OS X.
+inoremap <C-A> <Plug>(copilot-previous)
+inoremap <C-S> <Plug>(copilot-next)
+
+" Remap the default key binding <Tab> to <C-J>.
+" <Tab> is more used for indentation than completion.
+" <C-J> is rarely used for line feed.
+imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
+let g:copilot_no_tab_map = v:true
+
+"
+" --- vim-ai -------------------------------------------------------------------
+"
+
+" Complete text on the current line or in visual selection.
+nnoremap <leader>aa :AI <CR>
+xnoremap <leader>aa :AI <CR>
+
+" Trigger chat on the current line or in visual selection.
+nnoremap <leader>ac :AIChat <CR>
+xnoremap <leader>ac :AIChat <CR>
+
+" Redo last AI command on the current line or in visual selection.
+nnoremap <leader>ar :AIRedo <CR>
+xnoremap <leader>ar :AIRedo <CR>
+
+let g:vim_ai_chat = {
+  \  "options": {
+  \    "temperature": 0.7,
+  \  },
+  \}
+
+"
+" --- vim debug ----------------------------------------------------------------
+"
+" To find out what patterns are consuming most time, get an overview
+" with this sequence:
+":syntime on
+"[ redraw the text at least once with CTRL-L ]
+":syntime report
+
+"
+" --- PLUGIN -------------------------------------------------------------------
+"
+" Put the below lines at the very end of your vimrc file.
+"
+" Install git plugin (fu"git"ive):
+"   git clone https://tpope.io/vim/fugitive.git ~/.vim/pack/git-plugins/start/fugitive
+"
+" Install Github Copilot:
+"   git clone https://github.com/github/copilot.vim.git ~/.vim/pack/git-plugins/start/copilot.vim
+"   :Copilot setup
+"
+" Install OpenAI and ChatGPT plugin (vim-ai):
+"   git clone https://github.com/madox2/vim-ai.git ~/.vim/pack/git-plugins/start/vim-ai
+"   echo <YOUR_OPENAI_API_KEY> > ~/.config/openai.token
+
+" Load all plugins preceded by loading all of the helptags.
+" All messages and errors will be ignored during loading.
+packloadall | silent! helptags ALL
