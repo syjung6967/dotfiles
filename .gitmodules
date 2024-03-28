@@ -1,6 +1,3 @@
-[submodule ".vim/pack/git-plugins/start/fugitive"]
-	path = .vim/pack/git-plugins/start/fugitive
-	url = https://tpope.io/vim/fugitive.git
 [submodule ".vim/pack/git-plugins/start/copilot.vim"]
 	path = .vim/pack/git-plugins/start/copilot.vim
 	url = https://github.com/github/copilot.vim.git
@@ -14,3 +11,6 @@
 [submodule ".version_managers/update-golang"]
 	path = .version_managers/update-golang
 	url = https://github.com/udhos/update-golang
+[submodule ".vim/pack/git-plugins/start/fugitive"]
+	path = .vim/pack/git-plugins/start/fugitive
+	url = https://tpope.io/vim/fugitive.git
