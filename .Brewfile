@@ -5,6 +5,9 @@
 # newer than Apple git
 brew "git"
 
+# newer than Apple vim
+brew "vim"
+
 # terminal multiplexer
 brew "tmux"
 
