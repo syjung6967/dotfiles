@@ -1,0 +1,5 @@
+# References:
+#   https://book.getfoundry.sh/reference/config/formatter
+
+[fmt]
+multiline_func_header = "params_first"
