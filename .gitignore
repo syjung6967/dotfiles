@@ -9,10 +9,13 @@ Session*.vim
 # Ignore mongodb files
 .mongodb/
 
-# Ignore temp files
-.DS_Store
+# Ignore zsh temp files
 .zsh/
 .zsh_sessions/
 .zsh_history
 .zcompdump
+
+# Ignore temp files
+.DS_Store
+.CFUserTextEncoding
 .lesshst
