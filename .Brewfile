@@ -14,9 +14,6 @@ brew "tmux"
 # show the contents of the current directory as a tree
 brew "tree"
 
-# convenient tool to show running processes as a tree.
-brew "pstree"
-
 # json processor
 brew "jq"
 
@@ -29,6 +26,8 @@ brew "watch"
 brew "parallel"
 
 # simple CPU/MEM monitor
+# htop can replace pstree by using tree view
+# pstree can be also replaced by ps on shell script
 brew "htop"
 
 # enhanced parallel grep
