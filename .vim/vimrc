@@ -428,8 +428,18 @@ map <F4> :emenu <C-Z>
 " ALE (fixer & linter & completion)
 "source $HOME/.vim/ale.vim
 
-" ALE (fixer) and CoC (linter & completion)
+" ALE (fixer)
 source $HOME/.vim/ale-fixer-only.vim
+
+" CoC (linter & completion)
+let g:coc_global_extensions = [
+\ 'coc-tsserver',
+\ 'coc-sh',
+\ 'coc-go',
+\ 'coc-vimlsp',
+\ 'coc-toml',
+\ '@nomicfoundation/coc-solidity',
+\ ]
 source $HOME/.vim/coc.vim
 
 "

@@ -162,12 +162,12 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 "
 " Install Conquer of Completion (CoC) to support code completion:
 "   git clone -b release https://github.com/neoclide/coc.nvim ~/.vim/pack/git-plugins/start/coc.nvim
-"   vim -c "helptags ~/.vim/pack/git-plugins/start/coc.nvim/doc/ | q"
-"   :CocInstall coc-sh " For Shell
-"   :CocInstall coc-go " For Golang
-"   :CocInstall @nomicfoundation/coc-solidity " For Solidity (hardhat)
-"   :CocInstall coc-vimlsp " For Vim
-"   :CocInstall coc-toml " For TOML
+"
+" Install extensions:
+"   let g:coc_global_extensions = [
+"   \ 'coc-sh',
+"   \ 'coc-go',
+"   \ ]
 "
 " Caveats for coc-go:
 "
