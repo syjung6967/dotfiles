@@ -15,5 +15,5 @@
 	path = .vim/pack/git-plugins/start/fugitive
 	url = https://tpope.io/vim/fugitive.git
 [submodule "/Users/wm-id002306/.tmux/plugins/tpm"]
-	path = /Users/wm-id002306/.tmux/plugins/tpm
+	path = .tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
