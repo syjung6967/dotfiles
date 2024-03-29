@@ -11,9 +11,6 @@ brew "vim"
 # terminal multiplexer
 brew "tmux"
 
-# show the contents of the current directory as a tree
-brew "tree"
-
 # json processor
 brew "jq"
 

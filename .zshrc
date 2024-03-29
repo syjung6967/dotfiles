@@ -67,5 +67,9 @@ function ruler() {
     echo "|----0----|----1----|----2----|----3----|----4----|----5----|----6----|----7----|"
 }
 
+function tree() {
+    find -s $@ | sed 's%[^/]*/%  %g'
+}
+
 autoload -U +X bashcompinit && bashcompinit
 alias 'dotfiles=/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
