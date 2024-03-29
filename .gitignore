@@ -1,0 +1,18 @@
+# Ignore brew files
+.Brewfile.lock.json
+
+# Ignore vim files
+.viminfo
+Session*.vim
+.netrwhist
+
+# Ignore mongodb files
+.mongodb/
+
+# Ignore temp files
+.DS_Store
+.zsh/
+.zsh_sessions/
+.zsh_history
+.zcompdump
+.lesshst
