@@ -8,7 +8,7 @@ Dotfiles do not specify a terminal emulator.
 `dotfiles` alias is equivalent to `git` except for working directory is set to `$HOME`.
 
 ## Packages
-* Shell: zsh
+* Shell: zsh, bash
 * Editor: vim
 * Multiplexer: tmux
 * System monitor: htop
@@ -16,6 +16,8 @@ Dotfiles do not specify a terminal emulator.
 * Package manager: [Homebrew](https://brew.sh/) (BSD not supported)
 
 ## Installation
+Check Git is set up on your machine before installation.
+
 Run bootstrap first.
 
 ```sh
@@ -36,14 +38,18 @@ dotfiles checkout main
 dotfiles submodule update --init
 ```
 
-Install and upgrade all dependant packages from bundle.
+Install Homebrew and all packages from bundle file.
 ```sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+brew analytics off
+
 brew bundle --global
 ```
 
 ## Post Installation
 
-## Modification
+## Update dotfiles
 ```sh
 dotfiles add <new files>
 dotfiles rm <files or submodules>
