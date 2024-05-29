@@ -73,3 +73,12 @@ function tree() {
 
 autoload -U +X bashcompinit && bashcompinit
 alias 'dotfiles=/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+
+# If ssh-agent is running, use its environment.
+# Otherwise, start a new one manually.
+# To avoid launching multiple agents, this script does not start a new agent.
+if [ -e $SSH_AUTH_SOCK ]; then
+    export SSH_AGENT_PID=$(pgrep -u $USER ssh-agent)
+else
+    eval $(ssh-agent -s)
+fi

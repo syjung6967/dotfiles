@@ -5,6 +5,14 @@
 # newer than Apple git
 brew "git"
 
+# docker (do not install "cask" docker; it is for personal or small business)
+# Run `brew services start colima` or `colima start -f` after installation
+brew "docker"
+brew "docker-completion"
+brew "docker-compose"
+brew "docker-credential-helper"
+brew "colima"
+
 # newer than Apple vim
 brew "vim"
 
