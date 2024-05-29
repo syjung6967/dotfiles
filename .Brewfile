@@ -10,6 +10,7 @@ brew "git"
 brew "docker"
 brew "docker-completion"
 brew "docker-compose"
+brew "docker-buildx"
 brew "docker-credential-helper"
 brew "colima"
 
