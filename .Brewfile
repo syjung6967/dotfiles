@@ -1,18 +1,16 @@
 #
-# Brew packages
+# Formula packages
 #
 
 # newer than Apple git
 brew "git"
 
+# GnuPG
+brew "gnupg"
+
 # docker (do not install "cask" docker; it is for personal or small business)
-# Run `brew services start colima` or `colima start -f` after installation
-brew "docker"
+# Use Rancher Desktop instead
 brew "docker-completion"
-brew "docker-compose"
-brew "docker-buildx"
-brew "docker-credential-helper"
-brew "colima"
 
 # newer than Apple vim
 brew "vim"
@@ -22,6 +20,9 @@ brew "tmux"
 
 # json processor
 brew "jq"
+
+# websocket
+brew "websocat"
 
 # periodic monitoring
 brew "watch"
@@ -64,6 +65,9 @@ cask "visual-studio-code"
 # internet browser
 cask "google-chrome"
 cask "chromium"
+
+# Docker for native environment
+cask "rancher"
 
 #
 # App Store

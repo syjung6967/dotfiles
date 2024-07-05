@@ -82,3 +82,7 @@ if [ -e $SSH_AUTH_SOCK ]; then
 else
     eval $(ssh-agent -s)
 fi
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="$HOME/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
