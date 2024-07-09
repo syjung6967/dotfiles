@@ -9,8 +9,7 @@ Session*.vim
 # Ignore mongodb files
 .mongodb/
 
-# Ignore zsh temp files
-.zsh/
+# Ignore zsh files
 .zsh_sessions/
 .zsh_history
 .zcompdump

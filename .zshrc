@@ -9,6 +9,7 @@ setopt HIST_SAVE_NO_DUPS
 export CLICOLOR=1
 
 zstyle ':completion:*:*:git:*' script $HOMEBREW_PREFIX/share/zsh/site-functions/git-completion.bash
+fpath=($HOME/.zsh/completion $fpath)
 
 autoload -Uz compinit && compinit
 
