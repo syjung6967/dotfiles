@@ -1,3 +1,5 @@
+# Install packages by executing `brew bundle --global`.
+
 #
 # Formula packages
 #
@@ -17,6 +19,9 @@ brew "vim"
 
 # terminal multiplexer
 brew "tmux"
+
+# node for language server
+brew "node"
 
 # json processor
 brew "jq"

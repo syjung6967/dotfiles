@@ -52,7 +52,9 @@ brew bundle --global
 ## Update dotfiles
 ```sh
 dotfiles add <new files>
+dotfiles submodule add <repo> <path>
 dotfiles rm <files or submodules>
+
 dotfiles commit -a
 dotfiles push origin main
 ```
