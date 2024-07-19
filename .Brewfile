@@ -23,6 +23,9 @@ brew "tmux"
 # node for language server
 brew "node"
 
+# Code formatter
+brew "biome"
+
 # json processor
 brew "jq"
 

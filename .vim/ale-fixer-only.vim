@@ -16,7 +16,7 @@ let g:ale_linters = {}
 " A mapping from filetypes to "List" values for functions for fixing errors.
 " Run :ALEFixSuggest to check which fixers can be used.
 let g:ale_fixers = {
-\  '*': ["prettier"],
+\  '*': ["biome"],
 \  'go': ["gofmt", "goimports"],
 \  'solidity': ["forge"],
 \}
