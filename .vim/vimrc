@@ -61,13 +61,19 @@
 "
 " --- simple (but powerful) commands -------------------------------------------
 "
-" <C-O> / <C-I> or <Tab> " Undo/Redo cursor position.
 " 0 <C-V> <move> <modifiy sth> <Esc> " Add comment symbol within visual block on each front line.
 " . " Repeat last change, with count replaced with [count].
 " @: " Repeat last command-line [count] times.
 "
 " :echomsg / :messages " eval expression and print the result.
 " :...<C-B> / :...<C-E> " Move cursor to frontmost / backmost.
+"
+" :Te " Open netrw directory browser in new tab.
+"
+" 'jump' list (cursor position list)
+" :ju " List jumps.
+" :cle " Clear jumps.
+" <C-O> / <C-I> or <Tab> " Go to [count] older / newer cursor position in jump list.
 "
 " 'quickfix' and 'location' lists
 " :Ggrep / Glgrep " Remember result for `git grep` in quickfix list / location list.
@@ -84,7 +90,7 @@
 " :[n]chi / [n]lhi " Show the list of quickfix list / location list.
 "                  " Select n'th quickfix lists / location list as the current list.
 "
-" :Te " Open netrw directory browser in new tab. (other open option does not work well)
+" 'buffer' list
 " :ls " List buffers.
 " :tabe +<N>buf " Open N-th buffer in new tab.
 " :tabe # " Undo last accessed tab.
@@ -201,8 +207,8 @@ autocmd BufWritePre *
 " Enable persistent undo until poweroff.
 set undofile undodir=/tmp
 
-" Enable cscope for Linux develop environment.
-"set cscopetag
+" Enable cscope style tagging if tag files exist.
+set cscopetag
 
 "
 " --- layout -------------------------------------------------------------------
@@ -365,6 +371,9 @@ set report=0
 set hlsearch incsearch
 match Todo /\s\+$/ " Highlight trailing whitespaces.
 
+" Set maximum amount of memory (in Kbyte) to use for pattern matching.
+set maxmempattern=5000
+
 " Set indentation style.
 set autoindent indentexpr=""
 set noexpandtab " TAB (with 'no'); SPACE (without 'no')
@@ -405,6 +414,9 @@ set autochdir
 " Set program to use for grepping.
 set grepprg=rg\ -n
 
+" Make the jumplist behave like the tagstack.
+"set jumpoptions=stack
+
 "
 " --- menu ---------------------------------------------------------------------
 "
@@ -424,6 +436,23 @@ map <F4> :emenu <C-Z>
 " A: It is tsserver only feature. Use ALE together with CoC.
 "    https://github.com/dense-analysis/ale/blob/master/autoload/ale/references.vim
 "
+" Exuberant Ctags (e-ctags) and its successor Universal Ctags (u-ctags)
+" support modern languages but the rise of language server protocol (LSP)
+" has made ctags less powerful.
+"
+" - ctags lacks supports of reference tags and implementation tags.
+" - ctags follows wrong tags for projects using multiple langauges.
+" - ctags creates tags only for local projects so tags for external projects
+"   must be created by manually. Also if the project version is changed
+"   re-tagging is required by manually. (vim-gutentags plugin supports this)
+"
+" Language clients using LSP support functions compatible to tagfunc option
+" but they do not stack reference tags and implementation tags.
+" This is because jumping to the tags is inconsistent behavior in vim context.
+" (https://github.com/neovim/neovim/issues/16610)
+"
+" Fortunately tag stack can be modifiable by using settagstack() so the tags
+" can also be stacked without tagfunc option.
 
 " ALE (fixer & linter & completion)
 "source $HOME/.vim/ale.vim

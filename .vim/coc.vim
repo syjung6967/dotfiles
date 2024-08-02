@@ -2,6 +2,11 @@
 " --- CoC (modified from official example) ----------------------------------------------
 "
 
+" Compatible with tag search of Vim
+"
+" :[count]tag is not supported yet.
+set tagfunc=CocTagFunc
+
 " Show summary for linting on status line.
 " FIX: coc#status is not available on startup.
 set statusline+=\ %{coc#status()}
@@ -14,9 +19,6 @@ set updatetime=300
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved
 set signcolumn=yes
-
-" Compatible with tag search of Vim
-set tagfunc=CocTagFunc
 
 " Use tab for trigger completion with characters ahead and navigate
 " NOTE: There's always complete item selected by default, you may want to enable
@@ -156,6 +158,25 @@ nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
+" Support stacking all types of tags.
+" https://github.com/neoclide/coc.nvim/issues/1054
+function! s:goto_tag(tagkind) abort
+  let tagname = expand('<cWORD>')
+  let winnr = winnr()
+  let pos = getcurpos()
+  let pos[0] = bufnr()
+
+  if CocAction('jump' . a:tagkind)
+    call settagstack(winnr, {
+      \ 'curidx': gettagstack()['curidx'],
+      \ 'items': [{'tagname': tagname, 'from': pos}]
+      \ }, 't')
+  endif
+endfunction
+nmap gd :call <SID>goto_tag("Definition")<CR>
+nmap gi :call <SID>goto_tag("Implementation")<CR>
+nmap gr :call <SID>goto_tag("References")<CR>
 
 "
 " --- PLUGIN -------------------------------------------------------------------
