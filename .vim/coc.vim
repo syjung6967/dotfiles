@@ -179,6 +179,30 @@ nmap gi :call <SID>goto_tag("Implementation")<CR>
 nmap gr :call <SID>goto_tag("References")<CR>
 
 "
+" --- Outline ------------------------------------------------------------------
+"
+" Outline is a split window with current document symbols rendered as
+" |coc-tree|.
+"
+" TODO: auto close works wrong when only one tab exists.
+" TODO: auto close works wrong when multiple windows exist excluding outline.
+
+" Show outline for each tab automatically.
+"autocmd VimEnter,Tabnew *
+"  \ if empty(&buftype) | call CocActionAsync('showOutline', 1) | endif
+
+" Create a key-mapping to toggle outline.
+nnoremap <silent><nowait> <space>o  :call ToggleOutline()<CR>
+function! ToggleOutline() abort
+  let winid = coc#window#find('cocViewId', 'OUTLINE')
+  if winid == -1
+    call CocActionAsync('showOutline', 1)
+  else
+    call CocActionAsync('hideOutline', 1)
+  endif
+endfunction
+
+"
 " --- PLUGIN -------------------------------------------------------------------
 "
 " Install Conquer of Completion (CoC) to support code completion:

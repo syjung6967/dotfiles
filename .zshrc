@@ -5,6 +5,9 @@ setopt HIST_IGNORE_SPACE
 setopt HIST_FIND_NO_DUPS
 setopt HIST_SAVE_NO_DUPS
 
+# Enable forward searching by remapping XON/XOFF flow control to unused control character.
+[[ $- == *i* ]] && stty stop '^P'
+
 # BSD / Mac OS style 'ls' colorization
 export CLICOLOR=1
 
