@@ -3,6 +3,9 @@
 #
 # Core git behaviors
 #
+[user]
+	# My name
+	name = Seokyong Jung
 [init]
 	defaultBranch = main
 [core]
