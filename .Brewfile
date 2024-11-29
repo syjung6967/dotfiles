@@ -28,6 +28,7 @@ brew "biome"
 
 # json processor
 brew "jq"
+brew "yq"
 
 # websocket
 brew "websocat"
@@ -38,7 +39,7 @@ brew "watch"
 # do parallel job
 # (suitable for few number of big jobs)
 # (not recommended for benchmark because spawning processes is slow)
-brew "parallel"
+#brew "parallel"
 
 # simple CPU/MEM monitor
 # htop can replace pstree by using tree view

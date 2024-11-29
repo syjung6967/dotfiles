@@ -1,0 +1,47 @@
+# See `man git-config` for more options
+
+#
+# Core git behaviors
+#
+[init]
+	defaultBranch = main
+[core]
+	editor = vi
+[credential]
+	# Do not use password credentials for security
+	#helper = cache --timeout 604800
+[format]
+	#pretty = fuller
+[log]
+	# Too long time to verify about lots of commits
+	#showSignature = true
+[merge]
+	tool = vimdiff
+
+#
+# Use SSH signature
+#
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	allowedSignersFile = ~/.ssh/git/allowed_signers
+
+#
+# Redirect SSH port (21) to HTTPS port (443) to detour firewall
+#
+[url "git://"]
+	insteadOf = https://
+[url "ssh://git@ssh.github.com:443/"]
+	insteadOf = https://github.com/
+[url "ssh://git@altssh.gitlab.com:443/"]
+	insteadOf = https://gitlab.com/
+[url "ssh://git@altssh.bitbucket.org:443/"]
+	insteadOf = https://bitbucket.org/
+
+#
+# Include local gitconfig on current machine
+#
+# Local gitconfig is ignored by .gitignore
+#
+[include]
+	path = "~/.gitconfigs/.gitconfig"
