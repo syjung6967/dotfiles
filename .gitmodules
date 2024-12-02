@@ -11,9 +11,9 @@
 [submodule ".version_managers/update-golang"]
 	path = .version_managers/update-golang
 	url = https://github.com/udhos/update-golang
-[submodule ".vim/pack/git-plugins/start/fugitive"]
-	path = .vim/pack/git-plugins/start/fugitive
-	url = https://tpope.io/vim/fugitive.git
 [submodule ".tmux/plugins/tpm"]
 	path = .tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
+[submodule ".vim/pack/git-plugins/start/fugitive"]
+	path = .vim/pack/git-plugins/start/fugitive
+	url = https://github.com/tpope/vim-fugitive
