@@ -18,6 +18,12 @@
 [log]
 	# Too long time to verify about lots of commits
 	#showSignature = true
+[commit]
+	gpgSign = true
+[tag]
+	gpgSign = true
+[push]
+	gpgSign = if-asked
 [merge]
 	tool = vimdiff
 
@@ -27,7 +33,8 @@
 [gpg]
 	format = ssh
 [gpg "ssh"]
-	allowedSignersFile = ~/.ssh/git/allowed_signers
+	allowedSignersFile = ~/.allowed_signers
+	#defaultKeyCommand = sh -c 'echo key::$(ssh-add -L | grep sigkey)'
 
 #
 # Redirect SSH port (21) to HTTPS port (443) to detour firewall
