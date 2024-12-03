@@ -39,8 +39,6 @@
 #
 # Redirect SSH port (21) to HTTPS port (443) to detour firewall
 #
-[url "git://"]
-	insteadOf = https://
 [url "ssh://git@ssh.github.com:443/"]
 	insteadOf = https://github.com/
 [url "ssh://git@altssh.gitlab.com:443/"]
