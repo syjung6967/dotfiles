@@ -3,5 +3,6 @@
 
   "diagnostic.checkCurrentLine": true,
   "coc.source.file.ignoreHidden": false,
+  "coc.preferences.extensionUpdateCheck": "weekly",
   "go.goplsPath": "~/go/bin/gopls"
 }

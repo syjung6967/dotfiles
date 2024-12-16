@@ -22,7 +22,7 @@
 " Plugins which this vimrc script uses:
 " - git plugin: vim-fugitive / vim-gitgutter
 " - language client: ALE / CoC
-" - AI tool: copilot
+" - AI tool: Github Copilot / Codeium
 "
 " Plugins which this vimrc script does NOT use:
 " - Community-driven distribution of Vim: Neovim / SpaceVim / MacVim
