@@ -2,5 +2,6 @@
   "@nomicfoundation/coc-solidity.telemetry": false,
 
   "diagnostic.checkCurrentLine": true,
-  "coc.source.file.ignoreHidden": false
+  "coc.source.file.ignoreHidden": false,
+  "go.goplsPath": "~/go/bin/gopls"
 }
