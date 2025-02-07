@@ -10,12 +10,14 @@ brew "git"
 # GnuPG
 brew "gnupg"
 
-# docker (do not install "cask" docker; it is for personal or small business)
-# Use Rancher Desktop instead
+# docker
+# (do not install "cask" docker; it is for personal or small business)
+# (use Rancher Desktop instead)
 brew "docker-completion"
 
-# newer than Apple vim
+# text editor
 brew "vim"
+brew "neovim"
 
 # terminal multiplexer
 brew "tmux"

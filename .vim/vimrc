@@ -210,9 +210,6 @@ autocmd BufWritePre *
 " Enable persistent undo until poweroff.
 set undofile undodir=/tmp
 
-" Enable cscope style tagging if tag files exist.
-set cscopetag
-
 "
 " --- layout -------------------------------------------------------------------
 "
@@ -330,6 +327,8 @@ nnoremap q <Nop>
 nnoremap <silent> <F1> :set invnumber invrelativenumber invlist invpaste<CR>
 
 " Reload vimrc and save the current session to current directory.
+" TODO: "execute" via map commands does not work if v:this_session is empty
+"       so manual execution is required to create a new session.
 nnoremap <F10>
 \ :source $MYVIMRC<CR>
 \ :execute 'mksession! ' . v:this_session<CR>
@@ -356,7 +355,8 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-P>" : "\<S-Tab>"
 inoremap <expr> <ESC>[Z pumvisible() ? "\<C-P>" : "\<S-Tab>"
 
 " Copy text to clipboard in visual mode.
-vnoremap <silent> <Leader>c "+y
+"vnoremap <silent> <Leader>c "+y
+vnoremap <silent> <C-C> "+y
 
 "
 " --- mechanics ----------------------------------------------------------------
@@ -384,7 +384,6 @@ set tabstop=8 " Number of spaces that a <Tab> in the file counts for.
 set shiftwidth=0 " Use the same value as &tabstop
 
 " Set options to work <Leader> works intended.
-set noesckeys
 set notimeout ttimeout
 
 " Enable command completion.
@@ -537,7 +536,11 @@ packadd! cfilter
 "
 " .editorconfig file helps coding styles among various developers and IDEs.
 " (see https://editorconfig.org/)
-packadd! editorconfig
+"
+" Neovim embeds and enables editorconfig features by default.
+if !has('nvim')
+  packadd! editorconfig
+endif
 
 " Enable built-in helptoc plugin.
 "packadd! helptoc

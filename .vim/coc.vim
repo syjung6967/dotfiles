@@ -174,9 +174,10 @@ function! s:goto_tag(tagkind) abort
       \ }, 't')
   endif
 endfunction
-nmap gd :call <SID>goto_tag("Definition")<CR>
-nmap gi :call <SID>goto_tag("Implementation")<CR>
-nmap gr :call <SID>goto_tag("References")<CR>
+nmap <silent> gd :call <SID>goto_tag("Definition")<CR>
+nmap <silent> gy :call <SID>goto_tag("TypeDefinition")<CR>
+nmap <silent> gi :call <SID>goto_tag("Implementation")<CR>
+nmap <silent> gr :call <SID>goto_tag("References")<CR>
 
 "
 " --- Outline ------------------------------------------------------------------

@@ -5,6 +5,9 @@ setopt HIST_IGNORE_SPACE
 setopt HIST_FIND_NO_DUPS
 setopt HIST_SAVE_NO_DUPS
 
+alias vi=nvim
+alias vim=nvim
+
 # Enable forward searching by remapping XON/XOFF flow control to unused control character.
 [[ $- == *i* ]] && stty stop '^P'
 
