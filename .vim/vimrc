@@ -142,9 +142,6 @@ augroup MyAutocommandGroup
   "\  if !pumvisible() && match(v:char, '[[:alpha:].]') != -1 && v:count == 0
   "\ |   call feedkeys("\<C-X>\<C-O>", "n")
   "\ | endif
-
-  " Check if any buffers were changed outside of Vim when you act.
-  autocmd CursorMoved * checktime
 augroup END
 
 "
@@ -156,11 +153,11 @@ syntax on
 
 " Set number of colors. See color palette from:
 "   https://commons.wikimedia.org/wiki/File:Xterm_256color_chart.svg
-set t_Co=256
+"set t_Co=256
 
 " Draw visual bell at the col 6-7 (which fits line number margin) on the
 " current line instead of beeping.
-set visualbell t_vb=7[6G🔔8
+"set visualbell t_vb=7[6G🔔8
 
 " Enable highlighting cursor line and screen column.
 set cursorline cursorlineopt=both
@@ -172,8 +169,8 @@ set colorcolumn=81
 
 " Load color scheme.
 " Screenshots: https://github.com/vim/colorschemes/wiki/Remake-sampler-%E2%80%94-256-colors
-colorscheme evening
-"colorscheme desert
+"colorscheme evening
+colorscheme desert
 
 "
 " --- format -------------------------------------------------------------------
@@ -209,6 +206,9 @@ autocmd BufWritePre *
 
 " Enable persistent undo until poweroff.
 set undofile undodir=/tmp
+
+" Disable autoread/write.
+set noautoread noautowrite
 
 "
 " --- layout -------------------------------------------------------------------

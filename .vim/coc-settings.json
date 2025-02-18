@@ -1,8 +1,11 @@
 {
-  "@nomicfoundation/coc-solidity.telemetry": false,
-
   "diagnostic.checkCurrentLine": true,
+
+  "go.goplsPath": "~/go/bin/gopls",
+
   "coc.source.file.ignoreHidden": false,
   "coc.preferences.extensionUpdateCheck": "weekly",
-  "go.goplsPath": "~/go/bin/gopls"
+
+  "@nomicfoundation/coc-solidity.telemetry": false,
+  "@nomicfoundation/coc-solidity.formatter": "none"
 }

@@ -13,10 +13,14 @@ brew "gnupg"
 # docker
 # (do not install "cask" docker; it is for personal or small business)
 # (use Rancher Desktop instead)
+#brew "docker"
+#brew "docker-compose"
+#brew "docker-credential-helper"
+#brew "docker-credential-helper-ecr"
 brew "docker-completion"
 
 # text editor
-brew "vim"
+#brew "vim"
 brew "neovim"
 
 # terminal multiplexer
@@ -31,6 +35,9 @@ brew "biome"
 # json processor
 brew "jq"
 brew "yq"
+
+# static analysis tool for script
+brew "shellcheck"
 
 # websocket
 brew "websocat"
@@ -79,6 +86,7 @@ cask "chromium"
 
 # Docker for native environment
 cask "rancher"
+#cask "podman-desktop"
 
 #
 # App Store
