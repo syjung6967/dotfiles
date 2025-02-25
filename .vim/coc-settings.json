@@ -1,11 +1,13 @@
 {
-  "diagnostic.checkCurrentLine": true,
+	"extensions.updateCheck": "weekly",
 
-  "go.goplsPath": "~/go/bin/gopls",
+	"coc.source.file.ignoreHidden": false,
+	"diagnostic.checkCurrentLine": true,
 
-  "coc.source.file.ignoreHidden": false,
-  "coc.preferences.extensionUpdateCheck": "weekly",
+	"git.addGBlameToVirtualText": true,
 
-  "@nomicfoundation/coc-solidity.telemetry": false,
-  "@nomicfoundation/coc-solidity.formatter": "none"
+	"go.checkForUpdates": "disabled",
+	"go.goplsPath": "~/go/bin/gopls",
+
+	"@nomicfoundation/coc-solidity.telemetry": false
 }

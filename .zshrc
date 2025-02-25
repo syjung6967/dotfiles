@@ -9,7 +9,8 @@ alias vi=nvim
 alias vim=nvim
 
 # Enable forward searching by remapping XON/XOFF flow control to unused control character.
-[[ $- == *i* ]] && stty stop '^P'
+# `stty -a` shows the current mapping.
+[[ $- == *i* ]] && stty stop '<undef>' && stty start '<undef>'
 
 # BSD / Mac OS style 'ls' colorization
 export CLICOLOR=1

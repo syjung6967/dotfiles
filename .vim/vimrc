@@ -1,10 +1,10 @@
-" ======================================
-" vimrc script applicable to TUI VIM
+" ===============================================
+" vimrc script applicable to TUI Vim / Neovim
 "
 " Jed, syjung6967@gmail.com.
 "
 " SPDX-License-Identifier: ISC
-" ======================================
+" ===============================================
 "
 " First of all, fetch the repository to ~/.vim:
 "   cd ~/.vim
@@ -25,15 +25,18 @@
 " - AI tool: Github Copilot / Codeium
 "
 " Plugins which this vimrc script does NOT use:
-" - Community-driven distribution of Vim: Neovim / SpaceVim / MacVim
+" - Community-driven Vim: Neovim GUIs (e.g. Neovide) / MacVim
 "   TUI lover does not need extra features of them.
+" - Pre-configured setup: SpaceVim, LazyVim, AstroNvim
+"   They are friendly to non-vimer due to modularity but they harm Vim's
+"   nature behaviors too much. (yet another IDE)
 " - Plugin manager: vim-plug / Pathogen / Vundle / Dein
 "   Useful but not necessary.
 " - File system explorer: NERDTree
 "   Use netrw for simple job or GUI explorer for complicated jobs.
-" - Glyphs for developer: vim-devicons
+" - Glyphs for developer: vim-devicons / lspkind.nvim
 "   The icons are confusing to understand.
-" - Rich status line and tab line: vim-airline / vim-flagship
+" - Rich status line and tab line: vim-airline / lightline.vim / vim-flagship
 "   Maybe necessary if you use multiple status lines and tab lines.
 " - Fuzzy finder: fzf / ctrlp
 "   Use :e **/<file> for files and :grep <pattern> <file> for contents.
@@ -46,6 +49,8 @@
 "   https://pubs.opengroup.org/onlinepubs/9699919799/utilities/ex.html
 " Vim help files
 "   https://vimhelp.org/
+" Neovim features which changed from Vim
+"   https://neovim.io/doc/user/vim_diff.html
 "
 " Cheat sheet for search and replace
 "   https://vim.fandom.com/wiki/Search_and_replace
@@ -134,14 +139,6 @@ augroup MyAutocommandGroup
   " Refresh message line which contains ruler, to hide buffer update message
   " when chaning tab.
   autocmd BufEnter * redraw
-
-  " Trigger omni completion whenever '[[:alpha:]]' or '.' keystrokes in insert mode.
-  " Checking v:count makes repeat command (".") works properly. Without this,
-  " <C-X><C-O> is added if repeat command contains entering Insert mode.
-  "autocmd InsertCharPre *
-  "\  if !pumvisible() && match(v:char, '[[:alpha:].]') != -1 && v:count == 0
-  "\ |   call feedkeys("\<C-X>\<C-O>", "n")
-  "\ | endif
 augroup END
 
 "
@@ -176,7 +173,7 @@ colorscheme desert
 " --- format -------------------------------------------------------------------
 "
 
-set encoding=utf-8 termencoding=utf-8
+set encoding=utf-8
 set fileformats=unix,dos,mac " supported formats
 set nobomb " Remove BOM.
 
@@ -215,7 +212,10 @@ set noautoread noautowrite
 "
 
 " Set locale.
-language POSIX
+"
+" POSIX behaves unexpectedly.
+" For example, copying unicode characters using "+y does not work.
+language en_US.UTF-8
 
 " Set line numbers.
 set number relativenumber numberwidth=8
@@ -364,7 +364,7 @@ vnoremap <silent> <C-C> "+y
 
 set wrap nolinebreak
 set nofoldenable
-set history=500 undolevels=1000
+set history=10000 undolevels=1000
 set list listchars=tab:┊\ ,trail:·,extends:»
 
 " Set threshold for reporting number of lines changed.
@@ -380,6 +380,7 @@ set maxmempattern=5000
 " Set indentation style.
 set autoindent indentexpr=""
 set noexpandtab " TAB (with 'no'); SPACE (without 'no')
+set nosmarttab
 set tabstop=8 " Number of spaces that a <Tab> in the file counts for.
 set shiftwidth=0 " Use the same value as &tabstop
 
@@ -387,16 +388,13 @@ set shiftwidth=0 " Use the same value as &tabstop
 set notimeout ttimeout
 
 " Enable command completion.
-set wildmenu wildmode=list:longest
+set wildmenu wildmode=list:longest wildoptions=pum,tagfile
 
 " Enable mouse on Normal mode and Visual mode. (Helpful for non-vimer)
 set mouse=nv
 
-" Enable syntax checking and code completion. 'set formatoptions' does not
-" work the way you want due to ftplugin.
-" (This is feature: see https://github.com/vim/vim/issues/4680)
-filetype plugin on
-set omnifunc=syntaxcomplete#Complete
+" Enable filetype plugins.
+filetype plugin indent on
 
 " Set completion option.
 set completeopt=menuone,popup,noinsert,noselect
@@ -407,6 +405,15 @@ set matchpairs+=<:>
 " Do not influence to words typed before entering insert mode.
 set backspace=""
 
+" Add just one marginal space when joining sentences.
+set nojoinspaces
+
+" Keep cursor in the same column (if possible).
+set nostartofline
+
+" Control the behavior when switching between buffers.
+set switchbuf=uselast
+
 " Do not restore options and mappings when restoring session.
 set sessionoptions-=options
 
@@ -414,7 +421,7 @@ set sessionoptions-=options
 set autochdir
 
 " Set program to use for grepping.
-set grepprg=rg\ -n
+set grepprg=rg\ --vimgrep\ --hidden
 
 " Make the jumplist behave like the tagstack.
 "set jumpoptions=stack
@@ -465,6 +472,7 @@ source $HOME/.vim/ale-fixer-only.vim
 " CoC (linter & completion)
 let g:coc_global_extensions = [
 \ 'coc-tsserver',
+\ 'coc-json',
 \ 'coc-sh',
 \ 'coc-go',
 \ 'coc-vimlsp',
@@ -557,7 +565,8 @@ packadd! justify
 " Enable optional built-in matchit plugin.
 "
 " This plugin extends % motion which breaks original behavior.
-"packadd! matchit
+packadd! matchit
+"let g:loaded_matchit = 1
 
 " Enable built-in nohlsearch plugin.
 "

@@ -8,15 +8,15 @@
 	path = .vim/pack/git-plugins/start/coc.nvim
 	url = https://github.com/neoclide/coc.nvim
 	branch = release
-[submodule ".version_managers/update-golang"]
-	path = .version_managers/update-golang
-	url = https://github.com/udhos/update-golang
-[submodule ".tmux/plugins/tpm"]
-	path = .tmux/plugins/tpm
-	url = https://github.com/tmux-plugins/tpm
 [submodule ".vim/pack/git-plugins/start/fugitive"]
 	path = .vim/pack/git-plugins/start/fugitive
 	url = https://github.com/tpope/vim-fugitive
 [submodule ".vim/pack/git-plugins/start/codeium.vim"]
 	path = .vim/pack/git-plugins/start/codeium.vim
 	url = https://github.com/Exafunction/codeium.vim
+[submodule ".vim/pack/git-plugins/start/vim-gitgutter"]
+	path = .vim/pack/git-plugins/start/vim-gitgutter
+	url = https://github.com/airblade/vim-gitgutter
+[submodule ".tmux/plugins/tpm"]
+	path = .tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm
