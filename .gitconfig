@@ -9,7 +9,7 @@
 [init]
 	defaultBranch = main
 [core]
-	editor = vi
+	editor = nvim
 [credential]
 	# Do not use password credentials for security
 	#helper = cache --timeout 604800
@@ -24,8 +24,10 @@
 	gpgSign = true
 [push]
 	gpgSign = if-asked
+[diff]
+	tool = nvimdiff
 [merge]
-	tool = vimdiff
+	tool = nvimdiff
 
 #
 # Use SSH signature

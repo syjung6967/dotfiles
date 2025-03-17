@@ -20,7 +20,8 @@
 " This vimrc script uses as few plugins as possible to avoid relying on them.
 "
 " Plugins which this vimrc script uses:
-" - git plugin: vim-fugitive / vim-gitgutter
+" - version control system (VCS) diffs: vim-signify
+" - git wrapper: vim-fugitive
 " - language client: ALE / CoC
 " - AI tool: Github Copilot / Codeium
 "
@@ -74,7 +75,23 @@
 " :echomsg / :messages " eval expression and print the result.
 " :...<C-B> / :...<C-E> " Move cursor to frontmost / backmost.
 "
+" Jump to diffs
+" [c / ]c " Jump to previous / next start of a change.
+"
+" Text object selection
+" diw / yiw " Delete / Yank inner word.
+" daW / yaW " Delete / Yank a word.
+" diB / yiB " Delete / Yank inner {} block.
+" daB / yaB " Delete / Yank a {} block.
+"
+" :tabc " close the current tab.
 " :Te " Open netrw directory browser in new tab.
+"
+" Folding
+" zf / zd " Create / Delete a fold.
+" zE " Delete all folds.
+" zo / zc " Open / Close a fold.
+" zR / zM " Open / Close all folds.
 "
 " 'jump' list (cursor position list)
 " :ju " List jumps.
@@ -222,6 +239,9 @@ set number relativenumber numberwidth=8
 
 " keep N lines off the edges.
 set scrolloff=5
+
+" Draw the fold column.
+set foldcolumn=1
 
 " Set the title of the window to the value of 'titlestring'.
 set title
@@ -397,7 +417,7 @@ set mouse=nv
 filetype plugin indent on
 
 " Set completion option.
-set completeopt=menuone,popup,noinsert,noselect
+set completeopt=menuone,popup,noinsert
 
 " Add match pairs. (Same character pair is not allowed, e.g., `:`)
 set matchpairs+=<:>

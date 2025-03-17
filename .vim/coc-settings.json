@@ -4,8 +4,6 @@
 	"coc.source.file.ignoreHidden": false,
 	"diagnostic.checkCurrentLine": true,
 
-	"git.addGBlameToVirtualText": true,
-
 	"go.checkForUpdates": "disabled",
 	"go.goplsPath": "~/go/bin/gopls",
 
