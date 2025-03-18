@@ -455,19 +455,27 @@ set wildcharm=<C-Z>
 map <F4> :emenu <C-Z>
 
 "
-" --- LSP support --------------------------------------------------------------
+" --- language server protocol (LSP) support -----------------------------------
 "
-" Q: What is the difference between ALE and CoC?
-" A: linter for ALE, completion for CoC.
-"    https://www.reddit.com/r/vim/comments/fziffu/comment/fn6pq6k
+" LSP consists of 3 major components:
 "
-" Q: ALEFindReferences does not show matched lines.
-" A: It is tsserver only feature. Use ALE together with CoC.
-"    https://github.com/dense-analysis/ale/blob/master/autoload/ale/references.vim
+" - linter: find errors and warnings via static code analysis
+"   (the term linter includes formatter in general)
+" - autocomplete: get symbol candidates for current input context
+" - symbol search: find locations where symbol is defined, referenced,
+"   implemented, etc.
 "
-" Exuberant Ctags (e-ctags) and its successor Universal Ctags (u-ctags)
-" support modern languages but the rise of language server protocol (LSP)
-" has made ctags less powerful.
+" Weak points for ALE:
+"
+" - autocomplete due to using traditional vim feature (omnifunc)
+" - location preview when symbol search (e.g., file:|61 col 32| (no contents))
+"
+" Weak points for CoC:
+"
+" - support for external formatter (e.g., gofmt, forge)
+"
+" Exuberant Ctags (e-ctags) and its successor Universal Ctags (u-ctags) support
+" modern languages but the rise of LSP has made ctags less powerful.
 "
 " - ctags lacks supports of reference tags and implementation tags.
 " - ctags follows wrong tags for projects using multiple langauges.
