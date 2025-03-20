@@ -32,7 +32,8 @@
 "   They are friendly to non-vimer due to modularity but they harm Vim's
 "   nature behaviors too much. (yet another IDE)
 " - Plugin manager: vim-plug / Pathogen / Vundle / Dein
-"   Useful but not necessary.
+"   Manage your plugins as nested repositories (e.g., submodules for git).
+"   Then use `git submodule update --remote --merge` for updating plugins.
 " - File system explorer: NERDTree
 "   Use netrw for simple job or GUI explorer for complicated jobs.
 " - Glyphs for developer: vim-devicons / lspkind.nvim
@@ -42,6 +43,8 @@
 " - Fuzzy finder: fzf / ctrlp
 "   Use :e **/<file> for files and :grep <pattern> <file> for contents.
 "   See cfilter plugin for more usage.
+" - Review tool: Diffview
+"   Use vim's diff mode by running external merge tool (e.g., `git mergetool`).
 "
 " References:
 " POSIX specification for vi
@@ -84,6 +87,7 @@
 " diB / yiB " Delete / Yank inner {} block.
 " daB / yaB " Delete / Yank a {} block.
 "
+" :tab {cmd} " Execute {cmd} in new tab.
 " :tabc " close the current tab.
 " :Te " Open netrw directory browser in new tab.
 "

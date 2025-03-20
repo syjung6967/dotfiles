@@ -10,6 +10,7 @@
 	defaultBranch = main
 [core]
 	editor = nvim
+	pager = delta
 [credential]
 	# Do not use password credentials for security
 	#helper = cache --timeout 604800
@@ -28,6 +29,19 @@
 	tool = nvimdiff
 [merge]
 	tool = nvimdiff
+	conflictStyle = zdiff3
+[interactive]
+	diffFilter = delta --color-only
+
+#
+# Delta pager
+#
+# See https://dandavison.github.io/delta/
+#
+[delta]
+	line-numbers = true
+	navigate = true
+	#side-by-side = true
 
 #
 # Use SSH signature

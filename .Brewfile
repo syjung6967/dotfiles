@@ -20,7 +20,6 @@ brew "gnupg"
 brew "docker-completion"
 
 # text editor
-#brew "vim"
 brew "neovim"
 
 # terminal multiplexer
@@ -31,6 +30,9 @@ brew "node"
 
 # Code formatter
 brew "biome"
+
+# pager
+brew "git-delta"
 
 # json processor
 brew "jq"
