@@ -63,6 +63,21 @@
 	insteadOf = https://bitbucket.org/
 
 #
+# Alias
+#
+# Aliases that hide existing Git commands are ignored
+#
+[alias]
+	alias = config --get-regexp '^alias.'
+	amend = commit --amend --no-edit
+	ci = commit --edit
+	co = checkout
+	d = diff --patch-with-stat
+	l = log --graph --date-order --date=relative --format='%C(auto)%h %s — %ad %an %d'
+	s = status -s -b
+	sw = switch
+
+#
 # Include local gitconfig on current machine
 #
 # Local gitconfig is ignored by .gitignore

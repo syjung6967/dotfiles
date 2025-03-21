@@ -529,6 +529,16 @@ imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
 let g:copilot_no_tab_map = v:true
 
 "
+" --- Codeium ------------------------------------------------------------------
+"
+" <C-]> " clear current suggestion.
+" <M-]> " next suggestion.
+" <M-[> " previous suggestion.
+" <Tab> " insert current suggestion.
+" <C-K> " accept word from suggestion.
+" <C-L> " accept line from suggestion.
+
+"
 " --- vim debug ----------------------------------------------------------------
 "
 " To find out what patterns are consuming most time, get an overview

@@ -41,7 +41,12 @@ dotfiles submodule update --init
 Install Homebrew and all packages from bundle file.
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile # MacOS, zsh
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.bash_profile # MacOS, bash
+echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zshrc # Linux, zsh
+echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.bashrc # Linux, bash
+
 brew analytics off
 
 brew bundle --global
