@@ -14,6 +14,18 @@ Session*.vim
 .zsh_history
 .zcompdump
 
+# Ignore user default folders
+Applications/
+Desktop/
+Documents/
+Downloads/
+Library/
+Movies/
+Music/
+Pictures/
+Public/
+.Trash/
+
 # Ignore sensitive local files
 .ssh/
 
