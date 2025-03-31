@@ -1,3 +1,6 @@
+[submodule ".tmux/plugins/tpm"]
+	path = .tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm
 [submodule ".vim/pack/git-plugins/start/copilot.vim"]
 	path = .vim/pack/git-plugins/start/copilot.vim
 	url = https://github.com/github/copilot.vim.git
@@ -17,6 +20,6 @@
 [submodule ".vim/pack/git-plugins/start/codeium.vim"]
 	path = .vim/pack/git-plugins/start/codeium.vim
 	url = https://github.com/Exafunction/codeium.vim
-[submodule ".tmux/plugins/tpm"]
-	path = .tmux/plugins/tpm
-	url = https://github.com/tmux-plugins/tpm
+[submodule ".vim/pack/git-plugins/start/vim-easymotion"]
+	path = .vim/pack/git-plugins/start/vim-easymotion
+	url = https://github.com/easymotion/vim-easymotion

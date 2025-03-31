@@ -22,6 +22,7 @@
 " Plugins which this vimrc script uses:
 " - version control system (VCS) diffs: vim-signify
 " - git wrapper: vim-fugitive
+" - hint mode: vim-easymotion
 " - language client: ALE / CoC
 " - AI tool: Github Copilot / Codeium
 "
@@ -457,6 +458,18 @@ set grepprg=rg\ --vimgrep\ --hidden
 source $VIMRUNTIME/menu.vim
 set wildcharm=<C-Z>
 map <F4> :emenu <C-Z>
+
+"
+" --- hint mode ----------------------------------------------------------------
+"
+
+" Move to character.
+map <Leader>C <Plug>(easymotion-bd-f)
+nmap <Leader>C <Plug>(easymotion-overwin-f)
+
+" Move to word.
+map <Leader>W <Plug>(easymotion-bd-w)
+nmap <Leader>W <Plug>(easymotion-overwin-w)
 
 "
 " --- language server protocol (LSP) support -----------------------------------
