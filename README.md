@@ -1,19 +1,20 @@
 # Dotfiles
 **Use at your own risk.**
 
-Dotfiles do not specify a desktop environment or window manager becuase none is compatible with all operating systems (Windows, Mac OS, Linux, BSD).
+Dotfiles do not specify a desktop environment and window manager becuase none is compatible with all operating systems (WSL, Mac OS, Linux).
 
-Dotfiles do not specify a terminal emulator.
+For the same reason, dotfiles do not specify a terminal emulator.
 
 `dotfiles` alias is equivalent to `git` except for working directory is set to `$HOME`.
 
 ## Packages
 * Shell: zsh, bash
-* Editor: vim
+* Editor: Neovim (using vim compatible scripts as possible)
 * Multiplexer: tmux
 * System monitor: htop
-* File manager: [Midnight Commander](https://midnight-commander.org/)
-* Package manager: [Homebrew](https://brew.sh/) (BSD not supported)
+* File manager: Netrw, [muCommander](https://www.mucommander.com/)
+* Package manager: [Homebrew](https://brew.sh/)
+  * [Nix](https://nixos.org/) could be an alternative, but it is not intuitive for me and it requires too much configuration.
 
 ## Installation
 Check Git is set up on your machine before installation.
