@@ -1,16 +1,6 @@
 "
-" --- CoC (modified from official example) ----------------------------------------------
+" --- CoC (coc-example-config.vim) ---------------------------------------------
 "
-
-" Compatible with tag search of Vim
-"
-" :[count]tag is not supported yet.
-set tagfunc=CocTagFunc
-
-" Show summary for linting on status line.
-" FIX: coc#status is not available on startup.
-set statusline+=\ %{coc#status()}
-autocmd User CocStatusChange redrawstatus
 
 " Having longer updatetime (default is 4000 ms = 4s) leads to noticeable
 " delays and poor user experience
@@ -29,8 +19,7 @@ inoremap <silent><expr> <TAB>
       \ coc#pum#visible() ? coc#pum#next(1) :
       \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
-inoremap <silent><expr> <S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
-inoremap <silent><expr> <ESC>[Z coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
 " Make <CR> to accept selected completion item or notify coc.nvim to format
 " <C-g>u breaks current undo, please make your own choice
@@ -51,14 +40,14 @@ endif
 
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
+nmap <silent><nowait> [g <Plug>(coc-diagnostic-prev)
+nmap <silent><nowait> ]g <Plug>(coc-diagnostic-next)
 
 " GoTo code navigation
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+nmap <silent><nowait> gd <Plug>(coc-definition)
+nmap <silent><nowait> gy <Plug>(coc-type-definition)
+nmap <silent><nowait> gi <Plug>(coc-implementation)
+nmap <silent><nowait> gr <Plug>(coc-references)
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call ShowDocumentation()<CR>
@@ -80,6 +69,12 @@ nmap <leader>rn <Plug>(coc-rename)
 " Formatting selected code
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s)
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+augroup end
 
 " Applying code actions to the selected code block
 " Example: `<leader>aap` for current paragraph
@@ -159,6 +154,20 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
+"
+" --- CoC (customized) ---------------------------------------------------------
+"
+
+" Compatible with tag search of Vim
+"
+" :[count]tag is not supported yet.
+set tagfunc=CocTagFunc
+
+" Show summary for linting on status line.
+" FIX: coc#status is not available on startup.
+set statusline+=\ %{coc#status()}
+autocmd User CocStatusChange redrawstatus
+
 " Support stacking all types of tags.
 " https://github.com/neoclide/coc.nvim/issues/1054
 function! s:goto_tag(tagkind) abort
@@ -174,10 +183,10 @@ function! s:goto_tag(tagkind) abort
       \ }, 't')
   endif
 endfunction
-nmap <silent> gd :call <SID>goto_tag("Definition")<CR>
-nmap <silent> gy :call <SID>goto_tag("TypeDefinition")<CR>
-nmap <silent> gi :call <SID>goto_tag("Implementation")<CR>
-nmap <silent> gr :call <SID>goto_tag("References")<CR>
+nmap <silent><nowait> gd :call <SID>goto_tag("Definition")<CR>
+nmap <silent><nowait> gy :call <SID>goto_tag("TypeDefinition")<CR>
+nmap <silent><nowait> gi :call <SID>goto_tag("Implementation")<CR>
+nmap <silent><nowait> gr :call <SID>goto_tag("References")<CR>
 
 "
 " --- Outline ------------------------------------------------------------------
