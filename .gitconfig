@@ -12,10 +12,14 @@
 	editor = nvim
 	pager = delta
 [credential]
-	# Do not use password credentials for security
-	#helper = cache --timeout 604800
-[format]
-	#pretty = fuller
+	# Credential setup for HTTP(S)-based remotes.
+	#
+	# Do not use cache and store helpers for security
+	# Use secure persistent storage or Git Credential Manager (GCM)
+	#
+	# See https://github.com/git-ecosystem/git-credential-manager/blob/main/docs/configuration.md
+	# See also gitcredentials(7)
+	#helper = manager
 [log]
 	# Too long time to verify about lots of commits
 	#showSignature = true
@@ -50,7 +54,6 @@
 	format = ssh
 [gpg "ssh"]
 	allowedSignersFile = ~/.allowed_signers
-	#defaultKeyCommand = sh -c 'echo key::$(ssh-add -L | grep sigkey)'
 
 #
 # Redirect SSH port (21) to HTTPS port (443) to detour firewall
