@@ -5,7 +5,10 @@
 	"diagnostic.checkCurrentLine": true,
 
 	"go.checkForUpdates": "disabled",
-	"go.goplsPath": "~/go/bin/gopls",
+	"go.goplsPath": "$HOME/go/bin/gopls",
+
+	"rust-analyzer.server.path": "$HOME/.cargo/bin/rust-analyzer",
+	"workspace.ignoredFolders": ["$HOME", "$HOME/.cargo/**", "$HOME/.rustup/**"],
 
 	"@nomicfoundation/coc-solidity.telemetry": false
 }

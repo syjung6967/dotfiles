@@ -464,8 +464,13 @@ map <F4> :emenu <C-Z>
 "
 
 " Move to character.
-map <Leader>C <Plug>(easymotion-bd-f)
-nmap <Leader>C <Plug>(easymotion-overwin-f)
+"
+" WARN: this mapping overrides original behavior of 'f', 'F' motion commands
+" but it harms their contexts less.
+map f <Plug>(easymotion-bd-f)
+nmap f <Plug>(easymotion-overwin-f)
+map F <Plug>(easymotion-bd-f)
+nmap F <Plug>(easymotion-overwin-f)
 
 " Move to word.
 map <Leader>W <Plug>(easymotion-bd-w)
@@ -520,6 +525,7 @@ let g:coc_global_extensions = [
 \ 'coc-json',
 \ 'coc-sh',
 \ 'coc-go',
+\ 'coc-rust-analyzer',
 \ 'coc-vimlsp',
 \ 'coc-toml',
 \ '@nomicfoundation/coc-solidity',
