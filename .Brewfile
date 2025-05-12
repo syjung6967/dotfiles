@@ -7,6 +7,20 @@
 # Version control system
 brew "git"
 
+# SSH client
+#
+# Pre-installed OpenSSH may not support FIDO authenticator even though
+# authenticator provider ($SSH_SK_PROVIDER) is specified.
+brew "openssh"
+#brew "dropbear"
+
+# Security token
+#
+# List of known vendors and products
+# - https://github.com/Yubico/libfido2/blob/main/udev/fidodevs
+brew "ykman"
+brew "yubico-piv-tool"
+
 # GnuPG
 brew "gnupg"
 

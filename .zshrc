@@ -5,6 +5,8 @@ setopt HIST_IGNORE_SPACE
 setopt HIST_FIND_NO_DUPS
 setopt HIST_SAVE_NO_DUPS
 
+export LC_ALL=en_US.UTF-8
+
 alias vi=nvim
 alias vim=nvim
 
@@ -82,13 +84,8 @@ function tree() {
 autoload -U +X bashcompinit && bashcompinit
 alias 'dotfiles=/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
-# If ssh-agent is running, use its environment.
-# Otherwise, start a new one manually.
-# To avoid launching multiple agents, this script does not start a new agent.
-if [ -e $SSH_AUTH_SOCK ]; then
-    export SSH_AGENT_PID=$(pgrep -u $USER ssh-agent)
-else
-    eval $(ssh-agent -s)
+if [ ! -S $SSH_AUTH_SOCK ]; then
+    echo "WARN: SSH_AUTH_SOCK is not socket file"
 fi
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)

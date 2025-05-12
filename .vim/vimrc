@@ -465,12 +465,12 @@ map <F4> :emenu <C-Z>
 
 " Move to character.
 "
-" WARN: this mapping overrides original behavior of 'f', 'F' motion commands
-" but it harms their contexts less.
-map f <Plug>(easymotion-bd-f)
-nmap f <Plug>(easymotion-overwin-f)
-map F <Plug>(easymotion-bd-f)
-nmap F <Plug>(easymotion-overwin-f)
+" WARN: DO NOT override 'f', 'F' motion commands because original behavior
+" conflicts when repeating the commands.
+"map <Leader>f <Plug>(easymotion-bd-f)
+"nmap <Leader>f <Plug>(easymotion-overwin-f)
+map <Leader>F <Plug>(easymotion-bd-f)
+nmap <Leader>F <Plug>(easymotion-overwin-f)
 
 " Move to word.
 map <Leader>W <Plug>(easymotion-bd-w)

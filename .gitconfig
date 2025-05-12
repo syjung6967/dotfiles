@@ -23,6 +23,8 @@
 [log]
 	# Too long time to verify about lots of commits
 	#showSignature = true
+[branch]
+	sort = -committerdate
 [commit]
 	gpgSign = true
 [tag]

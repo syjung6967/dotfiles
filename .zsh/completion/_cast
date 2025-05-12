@@ -2322,7 +2322,7 @@ never\:"Force disable color output"))' \
 ;;
 (call)
 _arguments "${_arguments_options[@]}" : \
-'()--data=[Data for the transaction]:DATA:_default' \
+'()--data=[Raw hex-encoded data for the transaction. Used instead of \\\[SIG\\\] and \\\[ARGS\\\]]:DATA:_default' \
 '*--labels=[Labels to apply to the traces; format\: \`address\:label\`. Can only be used with \`--trace\`]:LABELS:_default' \
 '--evm-version=[The EVM Version to use. Can only be used with \`--trace\`]:EVM_VERSION:_default' \
 '-b+[The block height to query at]:BLOCK:_default' \
@@ -2449,7 +2449,7 @@ esac
 ;;
 (c)
 _arguments "${_arguments_options[@]}" : \
-'()--data=[Data for the transaction]:DATA:_default' \
+'()--data=[Raw hex-encoded data for the transaction. Used instead of \\\[SIG\\\] and \\\[ARGS\\\]]:DATA:_default' \
 '*--labels=[Labels to apply to the traces; format\: \`address\:label\`. Can only be used with \`--trace\`]:LABELS:_default' \
 '--evm-version=[The EVM Version to use. Can only be used with \`--trace\`]:EVM_VERSION:_default' \
 '-b+[The block height to query at]:BLOCK:_default' \
@@ -2884,6 +2884,7 @@ never\:"Force disable color output"))' \
 '--trezor[Use a Trezor hardware wallet]' \
 '--aws[Use AWS Key Management Service]' \
 '--gcp[Use Google Cloud Key Management Service]' \
+'--raw-unsigned[Generate a raw RLP-encoded unsigned transaction]' \
 '(-q --quiet)*-v[Verbosity level of the log messages.]' \
 '(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
 '-q[Do not print log messages]' \
@@ -3000,6 +3001,7 @@ never\:"Force disable color output"))' \
 '--trezor[Use a Trezor hardware wallet]' \
 '--aws[Use AWS Key Management Service]' \
 '--gcp[Use Google Cloud Key Management Service]' \
+'--raw-unsigned[Generate a raw RLP-encoded unsigned transaction]' \
 '(-q --quiet)*-v[Verbosity level of the log messages.]' \
 '(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
 '-q[Do not print log messages]' \
@@ -3124,6 +3126,8 @@ never\:"Force disable color output"))' \
 ;;
 (tx)
 _arguments "${_arguments_options[@]}" : \
+'--from=[The sender of the transaction]:FROM:_default' \
+'--nonce=[Nonce of the transaction]:NONCE:_default' \
 '-r+[The RPC endpoint, default value is http\://localhost\:8545]:URL:_default' \
 '--rpc-url=[The RPC endpoint, default value is http\://localhost\:8545]:URL:_default' \
 '--jwt-secret=[JWT Secret for the RPC endpoint]:JWT_SECRET:_default' \
@@ -3144,12 +3148,14 @@ never\:"Force disable color output"))' \
 '(-q --quiet --color)--json[Format log messages as JSON]' \
 '-h[Print help (see more with '\''--help'\'')]' \
 '--help[Print help (see more with '\''--help'\'')]' \
-':tx_hash -- The transaction hash:_default' \
+'::tx_hash -- The transaction hash:_default' \
 '::field -- If specified, only get the given field of the transaction. If "raw", the RLP encoded transaction will be printed:_default' \
 && ret=0
 ;;
 (t)
 _arguments "${_arguments_options[@]}" : \
+'--from=[The sender of the transaction]:FROM:_default' \
+'--nonce=[Nonce of the transaction]:NONCE:_default' \
 '-r+[The RPC endpoint, default value is http\://localhost\:8545]:URL:_default' \
 '--rpc-url=[The RPC endpoint, default value is http\://localhost\:8545]:URL:_default' \
 '--jwt-secret=[JWT Secret for the RPC endpoint]:JWT_SECRET:_default' \
@@ -3170,7 +3176,7 @@ never\:"Force disable color output"))' \
 '(-q --quiet --color)--json[Format log messages as JSON]' \
 '-h[Print help (see more with '\''--help'\'')]' \
 '--help[Print help (see more with '\''--help'\'')]' \
-':tx_hash -- The transaction hash:_default' \
+'::tx_hash -- The transaction hash:_default' \
 '::field -- If specified, only get the given field of the transaction. If "raw", the RLP encoded transaction will be printed:_default' \
 && ret=0
 ;;
@@ -3268,7 +3274,7 @@ never\:"Force disable color output"))' \
 '--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
 '--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
 '--async[Only print the transaction hash and exit immediately]' \
-'--unlocked[Send via \`eth_sendTransaction using the \`--from\` argument or \$ETH_FROM as sender]' \
+'--unlocked[Send via \`eth_sendTransaction\` using the \`--from\` argument or \$ETH_FROM as sender]' \
 '--legacy[Send a legacy transaction instead of an EIP1559 transaction]' \
 '(--legacy)--blob[Send a EIP-4844 blob transaction]' \
 '--flashbots[Use the Flashbots RPC URL with fast mode (<https\://rpc.flashbots.net/fast>)]' \
@@ -3388,7 +3394,7 @@ never\:"Force disable color output"))' \
 '--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
 '--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
 '--async[Only print the transaction hash and exit immediately]' \
-'--unlocked[Send via \`eth_sendTransaction using the \`--from\` argument or \$ETH_FROM as sender]' \
+'--unlocked[Send via \`eth_sendTransaction\` using the \`--from\` argument or \$ETH_FROM as sender]' \
 '--legacy[Send a legacy transaction instead of an EIP1559 transaction]' \
 '(--legacy)--blob[Send a EIP-4844 blob transaction]' \
 '--flashbots[Use the Flashbots RPC URL with fast mode (<https\://rpc.flashbots.net/fast>)]' \
@@ -3904,8 +3910,8 @@ never\:"Force disable color output"))' \
 ;;
 (decode-event)
 _arguments "${_arguments_options[@]}" : \
-'--sig=[The event signature. If none provided then tries to decode from local cache or \`https\://api.openchain.xyz\`]:SIG:_default' \
-'--event-sig=[The event signature. If none provided then tries to decode from local cache or \`https\://api.openchain.xyz\`]:SIG:_default' \
+'--sig=[The event signature. If none provided then tries to decode from local cache or <https\://api.openchain.xyz>]:SIG:_default' \
+'--event-sig=[The event signature. If none provided then tries to decode from local cache or <https\://api.openchain.xyz>]:SIG:_default' \
 '--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
 always\:"Force color output"
 never\:"Force disable color output"))' \
@@ -3924,8 +3930,8 @@ never\:"Force disable color output"))' \
 ;;
 (event-decode)
 _arguments "${_arguments_options[@]}" : \
-'--sig=[The event signature. If none provided then tries to decode from local cache or \`https\://api.openchain.xyz\`]:SIG:_default' \
-'--event-sig=[The event signature. If none provided then tries to decode from local cache or \`https\://api.openchain.xyz\`]:SIG:_default' \
+'--sig=[The event signature. If none provided then tries to decode from local cache or <https\://api.openchain.xyz>]:SIG:_default' \
+'--event-sig=[The event signature. If none provided then tries to decode from local cache or <https\://api.openchain.xyz>]:SIG:_default' \
 '--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
 always\:"Force color output"
 never\:"Force disable color output"))' \
@@ -3944,8 +3950,8 @@ never\:"Force disable color output"))' \
 ;;
 (--event-decode)
 _arguments "${_arguments_options[@]}" : \
-'--sig=[The event signature. If none provided then tries to decode from local cache or \`https\://api.openchain.xyz\`]:SIG:_default' \
-'--event-sig=[The event signature. If none provided then tries to decode from local cache or \`https\://api.openchain.xyz\`]:SIG:_default' \
+'--sig=[The event signature. If none provided then tries to decode from local cache or <https\://api.openchain.xyz>]:SIG:_default' \
+'--event-sig=[The event signature. If none provided then tries to decode from local cache or <https\://api.openchain.xyz>]:SIG:_default' \
 '--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
 always\:"Force color output"
 never\:"Force disable color output"))' \
@@ -3964,8 +3970,8 @@ never\:"Force disable color output"))' \
 ;;
 (ed)
 _arguments "${_arguments_options[@]}" : \
-'--sig=[The event signature. If none provided then tries to decode from local cache or \`https\://api.openchain.xyz\`]:SIG:_default' \
-'--event-sig=[The event signature. If none provided then tries to decode from local cache or \`https\://api.openchain.xyz\`]:SIG:_default' \
+'--sig=[The event signature. If none provided then tries to decode from local cache or <https\://api.openchain.xyz>]:SIG:_default' \
+'--event-sig=[The event signature. If none provided then tries to decode from local cache or <https\://api.openchain.xyz>]:SIG:_default' \
 '--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
 always\:"Force color output"
 never\:"Force disable color output"))' \
@@ -3984,8 +3990,8 @@ never\:"Force disable color output"))' \
 ;;
 (decode-error)
 _arguments "${_arguments_options[@]}" : \
-'--sig=[The error signature. If none provided then tries to decode from local cache or \`https\://api.openchain.xyz\`]:SIG:_default' \
-'--error-sig=[The error signature. If none provided then tries to decode from local cache or \`https\://api.openchain.xyz\`]:SIG:_default' \
+'--sig=[The error signature. If none provided then tries to decode from local cache or <https\://api.openchain.xyz>]:SIG:_default' \
+'--error-sig=[The error signature. If none provided then tries to decode from local cache or <https\://api.openchain.xyz>]:SIG:_default' \
 '--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
 always\:"Force color output"
 never\:"Force disable color output"))' \
@@ -4004,8 +4010,8 @@ never\:"Force disable color output"))' \
 ;;
 (error-decode)
 _arguments "${_arguments_options[@]}" : \
-'--sig=[The error signature. If none provided then tries to decode from local cache or \`https\://api.openchain.xyz\`]:SIG:_default' \
-'--error-sig=[The error signature. If none provided then tries to decode from local cache or \`https\://api.openchain.xyz\`]:SIG:_default' \
+'--sig=[The error signature. If none provided then tries to decode from local cache or <https\://api.openchain.xyz>]:SIG:_default' \
+'--error-sig=[The error signature. If none provided then tries to decode from local cache or <https\://api.openchain.xyz>]:SIG:_default' \
 '--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
 always\:"Force color output"
 never\:"Force disable color output"))' \
@@ -4024,8 +4030,8 @@ never\:"Force disable color output"))' \
 ;;
 (--error-decode)
 _arguments "${_arguments_options[@]}" : \
-'--sig=[The error signature. If none provided then tries to decode from local cache or \`https\://api.openchain.xyz\`]:SIG:_default' \
-'--error-sig=[The error signature. If none provided then tries to decode from local cache or \`https\://api.openchain.xyz\`]:SIG:_default' \
+'--sig=[The error signature. If none provided then tries to decode from local cache or <https\://api.openchain.xyz>]:SIG:_default' \
+'--error-sig=[The error signature. If none provided then tries to decode from local cache or <https\://api.openchain.xyz>]:SIG:_default' \
 '--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
 always\:"Force color output"
 never\:"Force disable color output"))' \
@@ -4044,8 +4050,8 @@ never\:"Force disable color output"))' \
 ;;
 (erd)
 _arguments "${_arguments_options[@]}" : \
-'--sig=[The error signature. If none provided then tries to decode from local cache or \`https\://api.openchain.xyz\`]:SIG:_default' \
-'--error-sig=[The error signature. If none provided then tries to decode from local cache or \`https\://api.openchain.xyz\`]:SIG:_default' \
+'--sig=[The error signature. If none provided then tries to decode from local cache or <https\://api.openchain.xyz>]:SIG:_default' \
+'--error-sig=[The error signature. If none provided then tries to decode from local cache or <https\://api.openchain.xyz>]:SIG:_default' \
 '--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
 always\:"Force color output"
 never\:"Force disable color output"))' \
@@ -4443,7 +4449,7 @@ never\:"Force disable color output"))' \
 '::selector -- The function selector:_default' \
 && ret=0
 ;;
-(4byte-decode)
+(4byte-calldata)
 _arguments "${_arguments_options[@]}" : \
 '--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
 always\:"Force color output"
@@ -4461,7 +4467,7 @@ never\:"Force disable color output"))' \
 '::calldata -- The ABI-encoded calldata:_default' \
 && ret=0
 ;;
-(4d)
+(4c)
 _arguments "${_arguments_options[@]}" : \
 '--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
 always\:"Force color output"
@@ -4479,7 +4485,7 @@ never\:"Force disable color output"))' \
 '::calldata -- The ABI-encoded calldata:_default' \
 && ret=0
 ;;
-(4bd)
+(4bc)
 _arguments "${_arguments_options[@]}" : \
 '--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
 always\:"Force color output"
@@ -4631,8 +4637,8 @@ never\:"Force disable color output"))' \
 '-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
 '--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
 '--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
-'-o[Skip the https\://openchain.xyz lookup]' \
-'--offline[Skip the https\://openchain.xyz lookup]' \
+'-o[Skip the <https\://openchain.xyz> lookup]' \
+'--offline[Skip the <https\://openchain.xyz> lookup]' \
 '(-q --quiet)*-v[Verbosity level of the log messages.]' \
 '(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
 '-q[Do not print log messages]' \
@@ -4651,8 +4657,8 @@ never\:"Force disable color output"))' \
 '-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
 '--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
 '--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
-'-o[Skip the https\://openchain.xyz lookup]' \
-'--offline[Skip the https\://openchain.xyz lookup]' \
+'-o[Skip the <https\://openchain.xyz> lookup]' \
+'--offline[Skip the <https\://openchain.xyz> lookup]' \
 '(-q --quiet)*-v[Verbosity level of the log messages.]' \
 '(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
 '-q[Do not print log messages]' \
@@ -5265,6 +5271,7 @@ never\:"Force disable color output"))' \
 ;;
 (storage)
 _arguments "${_arguments_options[@]}" : \
+'--proxy=[The known proxy address. If provided, the storage layout is retrieved from this address]:PROXY:_default' \
 '-b+[The block height to query at]:BLOCK:_default' \
 '--block=[The block height to query at]:BLOCK:_default' \
 '-r+[The RPC endpoint, default value is http\://localhost\:8545]:URL:_default' \
@@ -5307,13 +5314,15 @@ never\:"Force disable color output"))' \
 '--flashbots[Use the Flashbots RPC URL with fast mode (<https\://rpc.flashbots.net/fast>)]' \
 '--force[Clear the cache and artifacts folder and recompile]' \
 '--no-cache[Disable the cache]' \
+'(--no-cache)--dynamic-test-linking[Enable dynamic test linking]' \
 '--deny-warnings[Warnings will trigger a compiler error]' \
 '--no-auto-detect[Do not auto-detect the \`solc\` version]' \
 '--offline[Do not access the network]' \
 '--via-ir[Use the Yul intermediate representation compilation pipeline]' \
+'--use-literal-content[Changes compilation to only use literal content and not URLs]' \
 '--no-metadata[Do not append any metadata to the bytecode]' \
 '--build-info[Generate build info files]' \
-'--eof[Use EOF-enabled solc binary. Enables via-ir and sets EVM version to Prague. Requires Docker to be installed]' \
+'--eof[Whether to compile contracts to EOF bytecode]' \
 '--ast[Includes the AST as JSON in the compiler output]' \
 '(-C --contracts)--hardhat[Use the Hardhat-style project layout]' \
 '(-C --contracts)--hh[Use the Hardhat-style project layout]' \
@@ -5330,6 +5339,7 @@ never\:"Force disable color output"))' \
 ;;
 (st)
 _arguments "${_arguments_options[@]}" : \
+'--proxy=[The known proxy address. If provided, the storage layout is retrieved from this address]:PROXY:_default' \
 '-b+[The block height to query at]:BLOCK:_default' \
 '--block=[The block height to query at]:BLOCK:_default' \
 '-r+[The RPC endpoint, default value is http\://localhost\:8545]:URL:_default' \
@@ -5372,13 +5382,15 @@ never\:"Force disable color output"))' \
 '--flashbots[Use the Flashbots RPC URL with fast mode (<https\://rpc.flashbots.net/fast>)]' \
 '--force[Clear the cache and artifacts folder and recompile]' \
 '--no-cache[Disable the cache]' \
+'(--no-cache)--dynamic-test-linking[Enable dynamic test linking]' \
 '--deny-warnings[Warnings will trigger a compiler error]' \
 '--no-auto-detect[Do not auto-detect the \`solc\` version]' \
 '--offline[Do not access the network]' \
 '--via-ir[Use the Yul intermediate representation compilation pipeline]' \
+'--use-literal-content[Changes compilation to only use literal content and not URLs]' \
 '--no-metadata[Do not append any metadata to the bytecode]' \
 '--build-info[Generate build info files]' \
-'--eof[Use EOF-enabled solc binary. Enables via-ir and sets EVM version to Prague. Requires Docker to be installed]' \
+'--eof[Whether to compile contracts to EOF bytecode]' \
 '--ast[Includes the AST as JSON in the compiler output]' \
 '(-C --contracts)--hardhat[Use the Hardhat-style project layout]' \
 '(-C --contracts)--hh[Use the Hardhat-style project layout]' \
@@ -5707,6 +5719,7 @@ never\:"Force disable color output"))' \
 '-h[Print help (see more with '\''--help'\'')]' \
 '--help[Print help (see more with '\''--help'\'')]' \
 '::path -- If provided, then keypair will be written to an encrypted JSON keystore:_default' \
+'::account_name -- Account name for the keystore file. If provided, the keystore file will be named using this account name:_default' \
 && ret=0
 ;;
 (n)
@@ -5730,6 +5743,7 @@ never\:"Force disable color output"))' \
 '-h[Print help (see more with '\''--help'\'')]' \
 '--help[Print help (see more with '\''--help'\'')]' \
 '::path -- If provided, then keypair will be written to an encrypted JSON keystore:_default' \
+'::account_name -- Account name for the keystore file. If provided, the keystore file will be named using this account name:_default' \
 && ret=0
 ;;
 (new-mnemonic)
@@ -6251,6 +6265,46 @@ never\:"Force disable color output"))' \
 '--help[Print help (see more with '\''--help'\'')]' \
 && ret=0
 ;;
+(remove)
+_arguments "${_arguments_options[@]}" : \
+'--name=[The alias (or name) of the wallet to remove]:NAME:_default' \
+'--dir=[Optionally provide the keystore directory if not provided. default directory will be used (~/.foundry/keystores)]:DIR:_default' \
+'--unsafe-password=[Password for the JSON keystore in cleartext This is unsafe, we recommend using the default hidden password prompt]:PASSWORD:_default' \
+'--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
+always\:"Force color output"
+never\:"Force disable color output"))' \
+'-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'(-q --quiet)*-v[Verbosity level of the log messages.]' \
+'(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
+'-q[Do not print log messages]' \
+'--quiet[Do not print log messages]' \
+'(-q --quiet --color)--json[Format log messages as JSON]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+&& ret=0
+;;
+(rm)
+_arguments "${_arguments_options[@]}" : \
+'--name=[The alias (or name) of the wallet to remove]:NAME:_default' \
+'--dir=[Optionally provide the keystore directory if not provided. default directory will be used (~/.foundry/keystores)]:DIR:_default' \
+'--unsafe-password=[Password for the JSON keystore in cleartext This is unsafe, we recommend using the default hidden password prompt]:PASSWORD:_default' \
+'--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
+always\:"Force color output"
+never\:"Force disable color output"))' \
+'-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'(-q --quiet)*-v[Verbosity level of the log messages.]' \
+'(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
+'-q[Do not print log messages]' \
+'--quiet[Do not print log messages]' \
+'(-q --quiet --color)--json[Format log messages as JSON]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+&& ret=0
+;;
 (private-key)
 _arguments "${_arguments_options[@]}" : \
 '-f+[The sender account]:ADDRESS:_default' \
@@ -6327,6 +6381,80 @@ never\:"Force disable color output"))' \
 '::mnemonic_index_or_derivation_path_override -- If provided, the private key will be derived using the specified mnemonic index (if integer) or derivation path:_default' \
 && ret=0
 ;;
+(public-key)
+_arguments "${_arguments_options[@]}" : \
+'--raw-private-key=[If provided, the public key will be derived from the specified private key]:PRIVATE_KEY:_default' \
+'-f+[The sender account]:ADDRESS:_default' \
+'--from=[The sender account]:ADDRESS:_default' \
+'--private-key=[Use the provided private key]:RAW_PRIVATE_KEY:_default' \
+'--mnemonic=[Use the mnemonic phrase of mnemonic file at the specified path]:MNEMONIC:_default' \
+'--mnemonic-passphrase=[Use a BIP39 passphrase for the mnemonic]:PASSPHRASE:_default' \
+'--mnemonic-derivation-path=[The wallet derivation path]:PATH:_default' \
+'(--mnemonic-derivation-path)--mnemonic-index=[Use the private key from the given mnemonic index]:INDEX:_default' \
+'--keystore=[Use the keystore in the given folder or file]:PATH:_default' \
+'(--keystore)--account=[Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename]:ACCOUNT_NAME:_default' \
+'--password=[The keystore password]:PASSWORD:_default' \
+'--password-file=[The keystore password file path]:PASSWORD_FILE:_default' \
+'--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
+always\:"Force color output"
+never\:"Force disable color output"))' \
+'-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'-i[Open an interactive prompt to enter your private key]' \
+'--interactive[Open an interactive prompt to enter your private key]' \
+'-l[Use a Ledger hardware wallet]' \
+'--ledger[Use a Ledger hardware wallet]' \
+'-t[Use a Trezor hardware wallet]' \
+'--trezor[Use a Trezor hardware wallet]' \
+'--aws[Use AWS Key Management Service]' \
+'--gcp[Use Google Cloud Key Management Service]' \
+'(-q --quiet)*-v[Verbosity level of the log messages.]' \
+'(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
+'-q[Do not print log messages]' \
+'--quiet[Do not print log messages]' \
+'(-q --quiet --color)--json[Format log messages as JSON]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+&& ret=0
+;;
+(pubkey)
+_arguments "${_arguments_options[@]}" : \
+'--raw-private-key=[If provided, the public key will be derived from the specified private key]:PRIVATE_KEY:_default' \
+'-f+[The sender account]:ADDRESS:_default' \
+'--from=[The sender account]:ADDRESS:_default' \
+'--private-key=[Use the provided private key]:RAW_PRIVATE_KEY:_default' \
+'--mnemonic=[Use the mnemonic phrase of mnemonic file at the specified path]:MNEMONIC:_default' \
+'--mnemonic-passphrase=[Use a BIP39 passphrase for the mnemonic]:PASSPHRASE:_default' \
+'--mnemonic-derivation-path=[The wallet derivation path]:PATH:_default' \
+'(--mnemonic-derivation-path)--mnemonic-index=[Use the private key from the given mnemonic index]:INDEX:_default' \
+'--keystore=[Use the keystore in the given folder or file]:PATH:_default' \
+'(--keystore)--account=[Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename]:ACCOUNT_NAME:_default' \
+'--password=[The keystore password]:PASSWORD:_default' \
+'--password-file=[The keystore password file path]:PASSWORD_FILE:_default' \
+'--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
+always\:"Force color output"
+never\:"Force disable color output"))' \
+'-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'-i[Open an interactive prompt to enter your private key]' \
+'--interactive[Open an interactive prompt to enter your private key]' \
+'-l[Use a Ledger hardware wallet]' \
+'--ledger[Use a Ledger hardware wallet]' \
+'-t[Use a Trezor hardware wallet]' \
+'--trezor[Use a Trezor hardware wallet]' \
+'--aws[Use AWS Key Management Service]' \
+'--gcp[Use Google Cloud Key Management Service]' \
+'(-q --quiet)*-v[Verbosity level of the log messages.]' \
+'(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
+'-q[Do not print log messages]' \
+'--quiet[Do not print log messages]' \
+'(-q --quiet --color)--json[Format log messages as JSON]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+&& ret=0
+;;
 (decrypt-keystore)
 _arguments "${_arguments_options[@]}" : \
 '-k+[If not provided, keystore will try to be located at the default keystores directory (~/.foundry/keystores)]:KEYSTORE_DIR:_default' \
@@ -6353,6 +6481,50 @@ _arguments "${_arguments_options[@]}" : \
 '-k+[If not provided, keystore will try to be located at the default keystores directory (~/.foundry/keystores)]:KEYSTORE_DIR:_default' \
 '--keystore-dir=[If not provided, keystore will try to be located at the default keystores directory (~/.foundry/keystores)]:KEYSTORE_DIR:_default' \
 '--unsafe-password=[Password for the JSON keystore in cleartext This is unsafe, we recommend using the default hidden password prompt]:PASSWORD:_default' \
+'--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
+always\:"Force color output"
+never\:"Force disable color output"))' \
+'-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'(-q --quiet)*-v[Verbosity level of the log messages.]' \
+'(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
+'-q[Do not print log messages]' \
+'--quiet[Do not print log messages]' \
+'(-q --quiet --color)--json[Format log messages as JSON]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+':account_name -- The name for the account in the keystore:_default' \
+&& ret=0
+;;
+(change-password)
+_arguments "${_arguments_options[@]}" : \
+'-k+[If not provided, keystore will try to be located at the default keystores directory (~/.foundry/keystores)]:KEYSTORE_DIR:_default' \
+'--keystore-dir=[If not provided, keystore will try to be located at the default keystores directory (~/.foundry/keystores)]:KEYSTORE_DIR:_default' \
+'--unsafe-password=[Current password for the JSON keystore in cleartext This is unsafe, we recommend using the default hidden password prompt]:PASSWORD:_default' \
+'--unsafe-new-password=[New password for the JSON keystore in cleartext This is unsafe, we recommend using the default hidden password prompt]:NEW_PASSWORD:_default' \
+'--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
+always\:"Force color output"
+never\:"Force disable color output"))' \
+'-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'(-q --quiet)*-v[Verbosity level of the log messages.]' \
+'(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
+'-q[Do not print log messages]' \
+'--quiet[Do not print log messages]' \
+'(-q --quiet --color)--json[Format log messages as JSON]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+':account_name -- The name for the account in the keystore:_default' \
+&& ret=0
+;;
+(cp)
+_arguments "${_arguments_options[@]}" : \
+'-k+[If not provided, keystore will try to be located at the default keystores directory (~/.foundry/keystores)]:KEYSTORE_DIR:_default' \
+'--keystore-dir=[If not provided, keystore will try to be located at the default keystores directory (~/.foundry/keystores)]:KEYSTORE_DIR:_default' \
+'--unsafe-password=[Current password for the JSON keystore in cleartext This is unsafe, we recommend using the default hidden password prompt]:PASSWORD:_default' \
+'--unsafe-new-password=[New password for the JSON keystore in cleartext This is unsafe, we recommend using the default hidden password prompt]:NEW_PASSWORD:_default' \
 '--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
 always\:"Force color output"
 never\:"Force disable color output"))' \
@@ -6417,11 +6589,23 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
+(remove)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
 (private-key)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
+(public-key)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
 (decrypt-keystore)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(change-password)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
@@ -6483,6 +6667,7 @@ never\:"Force disable color output"))' \
 '-h[Print help (see more with '\''--help'\'')]' \
 '--help[Print help (see more with '\''--help'\'')]' \
 '::path -- If provided, then keypair will be written to an encrypted JSON keystore:_default' \
+'::account_name -- Account name for the keystore file. If provided, the keystore file will be named using this account name:_default' \
 && ret=0
 ;;
 (n)
@@ -6506,6 +6691,7 @@ never\:"Force disable color output"))' \
 '-h[Print help (see more with '\''--help'\'')]' \
 '--help[Print help (see more with '\''--help'\'')]' \
 '::path -- If provided, then keypair will be written to an encrypted JSON keystore:_default' \
+'::account_name -- Account name for the keystore file. If provided, the keystore file will be named using this account name:_default' \
 && ret=0
 ;;
 (new-mnemonic)
@@ -7027,6 +7213,46 @@ never\:"Force disable color output"))' \
 '--help[Print help (see more with '\''--help'\'')]' \
 && ret=0
 ;;
+(remove)
+_arguments "${_arguments_options[@]}" : \
+'--name=[The alias (or name) of the wallet to remove]:NAME:_default' \
+'--dir=[Optionally provide the keystore directory if not provided. default directory will be used (~/.foundry/keystores)]:DIR:_default' \
+'--unsafe-password=[Password for the JSON keystore in cleartext This is unsafe, we recommend using the default hidden password prompt]:PASSWORD:_default' \
+'--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
+always\:"Force color output"
+never\:"Force disable color output"))' \
+'-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'(-q --quiet)*-v[Verbosity level of the log messages.]' \
+'(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
+'-q[Do not print log messages]' \
+'--quiet[Do not print log messages]' \
+'(-q --quiet --color)--json[Format log messages as JSON]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+&& ret=0
+;;
+(rm)
+_arguments "${_arguments_options[@]}" : \
+'--name=[The alias (or name) of the wallet to remove]:NAME:_default' \
+'--dir=[Optionally provide the keystore directory if not provided. default directory will be used (~/.foundry/keystores)]:DIR:_default' \
+'--unsafe-password=[Password for the JSON keystore in cleartext This is unsafe, we recommend using the default hidden password prompt]:PASSWORD:_default' \
+'--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
+always\:"Force color output"
+never\:"Force disable color output"))' \
+'-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'(-q --quiet)*-v[Verbosity level of the log messages.]' \
+'(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
+'-q[Do not print log messages]' \
+'--quiet[Do not print log messages]' \
+'(-q --quiet --color)--json[Format log messages as JSON]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+&& ret=0
+;;
 (private-key)
 _arguments "${_arguments_options[@]}" : \
 '-f+[The sender account]:ADDRESS:_default' \
@@ -7103,6 +7329,80 @@ never\:"Force disable color output"))' \
 '::mnemonic_index_or_derivation_path_override -- If provided, the private key will be derived using the specified mnemonic index (if integer) or derivation path:_default' \
 && ret=0
 ;;
+(public-key)
+_arguments "${_arguments_options[@]}" : \
+'--raw-private-key=[If provided, the public key will be derived from the specified private key]:PRIVATE_KEY:_default' \
+'-f+[The sender account]:ADDRESS:_default' \
+'--from=[The sender account]:ADDRESS:_default' \
+'--private-key=[Use the provided private key]:RAW_PRIVATE_KEY:_default' \
+'--mnemonic=[Use the mnemonic phrase of mnemonic file at the specified path]:MNEMONIC:_default' \
+'--mnemonic-passphrase=[Use a BIP39 passphrase for the mnemonic]:PASSPHRASE:_default' \
+'--mnemonic-derivation-path=[The wallet derivation path]:PATH:_default' \
+'(--mnemonic-derivation-path)--mnemonic-index=[Use the private key from the given mnemonic index]:INDEX:_default' \
+'--keystore=[Use the keystore in the given folder or file]:PATH:_default' \
+'(--keystore)--account=[Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename]:ACCOUNT_NAME:_default' \
+'--password=[The keystore password]:PASSWORD:_default' \
+'--password-file=[The keystore password file path]:PASSWORD_FILE:_default' \
+'--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
+always\:"Force color output"
+never\:"Force disable color output"))' \
+'-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'-i[Open an interactive prompt to enter your private key]' \
+'--interactive[Open an interactive prompt to enter your private key]' \
+'-l[Use a Ledger hardware wallet]' \
+'--ledger[Use a Ledger hardware wallet]' \
+'-t[Use a Trezor hardware wallet]' \
+'--trezor[Use a Trezor hardware wallet]' \
+'--aws[Use AWS Key Management Service]' \
+'--gcp[Use Google Cloud Key Management Service]' \
+'(-q --quiet)*-v[Verbosity level of the log messages.]' \
+'(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
+'-q[Do not print log messages]' \
+'--quiet[Do not print log messages]' \
+'(-q --quiet --color)--json[Format log messages as JSON]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+&& ret=0
+;;
+(pubkey)
+_arguments "${_arguments_options[@]}" : \
+'--raw-private-key=[If provided, the public key will be derived from the specified private key]:PRIVATE_KEY:_default' \
+'-f+[The sender account]:ADDRESS:_default' \
+'--from=[The sender account]:ADDRESS:_default' \
+'--private-key=[Use the provided private key]:RAW_PRIVATE_KEY:_default' \
+'--mnemonic=[Use the mnemonic phrase of mnemonic file at the specified path]:MNEMONIC:_default' \
+'--mnemonic-passphrase=[Use a BIP39 passphrase for the mnemonic]:PASSPHRASE:_default' \
+'--mnemonic-derivation-path=[The wallet derivation path]:PATH:_default' \
+'(--mnemonic-derivation-path)--mnemonic-index=[Use the private key from the given mnemonic index]:INDEX:_default' \
+'--keystore=[Use the keystore in the given folder or file]:PATH:_default' \
+'(--keystore)--account=[Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename]:ACCOUNT_NAME:_default' \
+'--password=[The keystore password]:PASSWORD:_default' \
+'--password-file=[The keystore password file path]:PASSWORD_FILE:_default' \
+'--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
+always\:"Force color output"
+never\:"Force disable color output"))' \
+'-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'-i[Open an interactive prompt to enter your private key]' \
+'--interactive[Open an interactive prompt to enter your private key]' \
+'-l[Use a Ledger hardware wallet]' \
+'--ledger[Use a Ledger hardware wallet]' \
+'-t[Use a Trezor hardware wallet]' \
+'--trezor[Use a Trezor hardware wallet]' \
+'--aws[Use AWS Key Management Service]' \
+'--gcp[Use Google Cloud Key Management Service]' \
+'(-q --quiet)*-v[Verbosity level of the log messages.]' \
+'(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
+'-q[Do not print log messages]' \
+'--quiet[Do not print log messages]' \
+'(-q --quiet --color)--json[Format log messages as JSON]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+&& ret=0
+;;
 (decrypt-keystore)
 _arguments "${_arguments_options[@]}" : \
 '-k+[If not provided, keystore will try to be located at the default keystores directory (~/.foundry/keystores)]:KEYSTORE_DIR:_default' \
@@ -7129,6 +7429,50 @@ _arguments "${_arguments_options[@]}" : \
 '-k+[If not provided, keystore will try to be located at the default keystores directory (~/.foundry/keystores)]:KEYSTORE_DIR:_default' \
 '--keystore-dir=[If not provided, keystore will try to be located at the default keystores directory (~/.foundry/keystores)]:KEYSTORE_DIR:_default' \
 '--unsafe-password=[Password for the JSON keystore in cleartext This is unsafe, we recommend using the default hidden password prompt]:PASSWORD:_default' \
+'--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
+always\:"Force color output"
+never\:"Force disable color output"))' \
+'-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'(-q --quiet)*-v[Verbosity level of the log messages.]' \
+'(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
+'-q[Do not print log messages]' \
+'--quiet[Do not print log messages]' \
+'(-q --quiet --color)--json[Format log messages as JSON]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+':account_name -- The name for the account in the keystore:_default' \
+&& ret=0
+;;
+(change-password)
+_arguments "${_arguments_options[@]}" : \
+'-k+[If not provided, keystore will try to be located at the default keystores directory (~/.foundry/keystores)]:KEYSTORE_DIR:_default' \
+'--keystore-dir=[If not provided, keystore will try to be located at the default keystores directory (~/.foundry/keystores)]:KEYSTORE_DIR:_default' \
+'--unsafe-password=[Current password for the JSON keystore in cleartext This is unsafe, we recommend using the default hidden password prompt]:PASSWORD:_default' \
+'--unsafe-new-password=[New password for the JSON keystore in cleartext This is unsafe, we recommend using the default hidden password prompt]:NEW_PASSWORD:_default' \
+'--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
+always\:"Force color output"
+never\:"Force disable color output"))' \
+'-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'(-q --quiet)*-v[Verbosity level of the log messages.]' \
+'(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
+'-q[Do not print log messages]' \
+'--quiet[Do not print log messages]' \
+'(-q --quiet --color)--json[Format log messages as JSON]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+':account_name -- The name for the account in the keystore:_default' \
+&& ret=0
+;;
+(cp)
+_arguments "${_arguments_options[@]}" : \
+'-k+[If not provided, keystore will try to be located at the default keystores directory (~/.foundry/keystores)]:KEYSTORE_DIR:_default' \
+'--keystore-dir=[If not provided, keystore will try to be located at the default keystores directory (~/.foundry/keystores)]:KEYSTORE_DIR:_default' \
+'--unsafe-password=[Current password for the JSON keystore in cleartext This is unsafe, we recommend using the default hidden password prompt]:PASSWORD:_default' \
+'--unsafe-new-password=[New password for the JSON keystore in cleartext This is unsafe, we recommend using the default hidden password prompt]:NEW_PASSWORD:_default' \
 '--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
 always\:"Force color output"
 never\:"Force disable color output"))' \
@@ -7193,11 +7537,23 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
+(remove)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
 (private-key)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
+(public-key)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
 (decrypt-keystore)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(change-password)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
@@ -7764,6 +8120,7 @@ never\:"Force disable color output"))' \
 '--odyssey[Enables Odyssey features]' \
 '--with-local-artifacts[Use current project artifacts for trace decoding]' \
 '--la[Use current project artifacts for trace decoding]' \
+'--disable-block-gas-limit[Disable block gas limit check]' \
 '(-q --quiet)*-v[Verbosity level of the log messages.]' \
 '(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
 '-q[Do not print log messages]' \
@@ -7807,6 +8164,7 @@ never\:"Force disable color output"))' \
 '--odyssey[Enables Odyssey features]' \
 '--with-local-artifacts[Use current project artifacts for trace decoding]' \
 '--la[Use current project artifacts for trace decoding]' \
+'--disable-block-gas-limit[Disable block gas limit check]' \
 '(-q --quiet)*-v[Verbosity level of the log messages.]' \
 '(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
 '-q[Do not print log messages]' \
@@ -8041,8 +8399,8 @@ never\:"Force disable color output"))' \
 '-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
 '--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
 '--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
-'-r[Resolve the function signatures for the extracted selectors using https\://openchain.xyz]' \
-'--resolve[Resolve the function signatures for the extracted selectors using https\://openchain.xyz]' \
+'-r[Resolve the function signatures for the extracted selectors using <https\://openchain.xyz>]' \
+'--resolve[Resolve the function signatures for the extracted selectors using <https\://openchain.xyz>]' \
 '(-q --quiet)*-v[Verbosity level of the log messages.]' \
 '(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
 '-q[Do not print log messages]' \
@@ -8061,8 +8419,8 @@ never\:"Force disable color output"))' \
 '-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
 '--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
 '--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
-'-r[Resolve the function signatures for the extracted selectors using https\://openchain.xyz]' \
-'--resolve[Resolve the function signatures for the extracted selectors using https\://openchain.xyz]' \
+'-r[Resolve the function signatures for the extracted selectors using <https\://openchain.xyz>]' \
+'--resolve[Resolve the function signatures for the extracted selectors using <https\://openchain.xyz>]' \
 '(-q --quiet)*-v[Verbosity level of the log messages.]' \
 '(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
 '-q[Do not print log messages]' \
@@ -8090,6 +8448,324 @@ never\:"Force disable color output"))' \
 '--help[Print help (see more with '\''--help'\'')]' \
 '::eof:_default' \
 && ret=0
+;;
+(tx-pool)
+_arguments "${_arguments_options[@]}" : \
+'--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
+always\:"Force color output"
+never\:"Force disable color output"))' \
+'-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'(-q --quiet)*-v[Verbosity level of the log messages.]' \
+'(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
+'-q[Do not print log messages]' \
+'--quiet[Do not print log messages]' \
+'(-q --quiet --color)--json[Format log messages as JSON]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+":: :_cast__tx-pool_commands" \
+"*::: :->tx-pool" \
+&& ret=0
+
+    case $state in
+    (tx-pool)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:cast-tx-pool-command-$line[1]:"
+        case $line[1] in
+            (content)
+_arguments "${_arguments_options[@]}" : \
+'-r+[The RPC endpoint, default value is http\://localhost\:8545]:URL:_default' \
+'--rpc-url=[The RPC endpoint, default value is http\://localhost\:8545]:URL:_default' \
+'--jwt-secret=[JWT Secret for the RPC endpoint]:JWT_SECRET:_default' \
+'--rpc-timeout=[Timeout for the RPC request in seconds]:RPC_TIMEOUT:_default' \
+'*--rpc-headers=[Specify custom headers for RPC requests]:RPC_HEADERS:_default' \
+'--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
+always\:"Force color output"
+never\:"Force disable color output"))' \
+'-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--flashbots[Use the Flashbots RPC URL with fast mode (<https\://rpc.flashbots.net/fast>)]' \
+'(-q --quiet)*-v[Verbosity level of the log messages.]' \
+'(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
+'-q[Do not print log messages]' \
+'--quiet[Do not print log messages]' \
+'(-q --quiet --color)--json[Format log messages as JSON]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+&& ret=0
+;;
+(content-from)
+_arguments "${_arguments_options[@]}" : \
+'-f+[The Signer to filter the transactions by]:FROM:_default' \
+'--from=[The Signer to filter the transactions by]:FROM:_default' \
+'-r+[The RPC endpoint, default value is http\://localhost\:8545]:URL:_default' \
+'--rpc-url=[The RPC endpoint, default value is http\://localhost\:8545]:URL:_default' \
+'--jwt-secret=[JWT Secret for the RPC endpoint]:JWT_SECRET:_default' \
+'--rpc-timeout=[Timeout for the RPC request in seconds]:RPC_TIMEOUT:_default' \
+'*--rpc-headers=[Specify custom headers for RPC requests]:RPC_HEADERS:_default' \
+'--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
+always\:"Force color output"
+never\:"Force disable color output"))' \
+'-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--flashbots[Use the Flashbots RPC URL with fast mode (<https\://rpc.flashbots.net/fast>)]' \
+'(-q --quiet)*-v[Verbosity level of the log messages.]' \
+'(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
+'-q[Do not print log messages]' \
+'--quiet[Do not print log messages]' \
+'(-q --quiet --color)--json[Format log messages as JSON]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+&& ret=0
+;;
+(inspect)
+_arguments "${_arguments_options[@]}" : \
+'-r+[The RPC endpoint, default value is http\://localhost\:8545]:URL:_default' \
+'--rpc-url=[The RPC endpoint, default value is http\://localhost\:8545]:URL:_default' \
+'--jwt-secret=[JWT Secret for the RPC endpoint]:JWT_SECRET:_default' \
+'--rpc-timeout=[Timeout for the RPC request in seconds]:RPC_TIMEOUT:_default' \
+'*--rpc-headers=[Specify custom headers for RPC requests]:RPC_HEADERS:_default' \
+'--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
+always\:"Force color output"
+never\:"Force disable color output"))' \
+'-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--flashbots[Use the Flashbots RPC URL with fast mode (<https\://rpc.flashbots.net/fast>)]' \
+'(-q --quiet)*-v[Verbosity level of the log messages.]' \
+'(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
+'-q[Do not print log messages]' \
+'--quiet[Do not print log messages]' \
+'(-q --quiet --color)--json[Format log messages as JSON]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+&& ret=0
+;;
+(status)
+_arguments "${_arguments_options[@]}" : \
+'-r+[The RPC endpoint, default value is http\://localhost\:8545]:URL:_default' \
+'--rpc-url=[The RPC endpoint, default value is http\://localhost\:8545]:URL:_default' \
+'--jwt-secret=[JWT Secret for the RPC endpoint]:JWT_SECRET:_default' \
+'--rpc-timeout=[Timeout for the RPC request in seconds]:RPC_TIMEOUT:_default' \
+'*--rpc-headers=[Specify custom headers for RPC requests]:RPC_HEADERS:_default' \
+'--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
+always\:"Force color output"
+never\:"Force disable color output"))' \
+'-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--flashbots[Use the Flashbots RPC URL with fast mode (<https\://rpc.flashbots.net/fast>)]' \
+'(-q --quiet)*-v[Verbosity level of the log messages.]' \
+'(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
+'-q[Do not print log messages]' \
+'--quiet[Do not print log messages]' \
+'(-q --quiet --color)--json[Format log messages as JSON]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_cast__tx-pool__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:cast-tx-pool-help-command-$line[1]:"
+        case $line[1] in
+            (content)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(content-from)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(inspect)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(status)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(tp)
+_arguments "${_arguments_options[@]}" : \
+'--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
+always\:"Force color output"
+never\:"Force disable color output"))' \
+'-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'(-q --quiet)*-v[Verbosity level of the log messages.]' \
+'(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
+'-q[Do not print log messages]' \
+'--quiet[Do not print log messages]' \
+'(-q --quiet --color)--json[Format log messages as JSON]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+":: :_cast__tx-pool_commands" \
+"*::: :->tx-pool" \
+&& ret=0
+
+    case $state in
+    (tx-pool)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:cast-tx-pool-command-$line[1]:"
+        case $line[1] in
+            (content)
+_arguments "${_arguments_options[@]}" : \
+'-r+[The RPC endpoint, default value is http\://localhost\:8545]:URL:_default' \
+'--rpc-url=[The RPC endpoint, default value is http\://localhost\:8545]:URL:_default' \
+'--jwt-secret=[JWT Secret for the RPC endpoint]:JWT_SECRET:_default' \
+'--rpc-timeout=[Timeout for the RPC request in seconds]:RPC_TIMEOUT:_default' \
+'*--rpc-headers=[Specify custom headers for RPC requests]:RPC_HEADERS:_default' \
+'--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
+always\:"Force color output"
+never\:"Force disable color output"))' \
+'-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--flashbots[Use the Flashbots RPC URL with fast mode (<https\://rpc.flashbots.net/fast>)]' \
+'(-q --quiet)*-v[Verbosity level of the log messages.]' \
+'(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
+'-q[Do not print log messages]' \
+'--quiet[Do not print log messages]' \
+'(-q --quiet --color)--json[Format log messages as JSON]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+&& ret=0
+;;
+(content-from)
+_arguments "${_arguments_options[@]}" : \
+'-f+[The Signer to filter the transactions by]:FROM:_default' \
+'--from=[The Signer to filter the transactions by]:FROM:_default' \
+'-r+[The RPC endpoint, default value is http\://localhost\:8545]:URL:_default' \
+'--rpc-url=[The RPC endpoint, default value is http\://localhost\:8545]:URL:_default' \
+'--jwt-secret=[JWT Secret for the RPC endpoint]:JWT_SECRET:_default' \
+'--rpc-timeout=[Timeout for the RPC request in seconds]:RPC_TIMEOUT:_default' \
+'*--rpc-headers=[Specify custom headers for RPC requests]:RPC_HEADERS:_default' \
+'--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
+always\:"Force color output"
+never\:"Force disable color output"))' \
+'-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--flashbots[Use the Flashbots RPC URL with fast mode (<https\://rpc.flashbots.net/fast>)]' \
+'(-q --quiet)*-v[Verbosity level of the log messages.]' \
+'(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
+'-q[Do not print log messages]' \
+'--quiet[Do not print log messages]' \
+'(-q --quiet --color)--json[Format log messages as JSON]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+&& ret=0
+;;
+(inspect)
+_arguments "${_arguments_options[@]}" : \
+'-r+[The RPC endpoint, default value is http\://localhost\:8545]:URL:_default' \
+'--rpc-url=[The RPC endpoint, default value is http\://localhost\:8545]:URL:_default' \
+'--jwt-secret=[JWT Secret for the RPC endpoint]:JWT_SECRET:_default' \
+'--rpc-timeout=[Timeout for the RPC request in seconds]:RPC_TIMEOUT:_default' \
+'*--rpc-headers=[Specify custom headers for RPC requests]:RPC_HEADERS:_default' \
+'--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
+always\:"Force color output"
+never\:"Force disable color output"))' \
+'-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--flashbots[Use the Flashbots RPC URL with fast mode (<https\://rpc.flashbots.net/fast>)]' \
+'(-q --quiet)*-v[Verbosity level of the log messages.]' \
+'(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
+'-q[Do not print log messages]' \
+'--quiet[Do not print log messages]' \
+'(-q --quiet --color)--json[Format log messages as JSON]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+&& ret=0
+;;
+(status)
+_arguments "${_arguments_options[@]}" : \
+'-r+[The RPC endpoint, default value is http\://localhost\:8545]:URL:_default' \
+'--rpc-url=[The RPC endpoint, default value is http\://localhost\:8545]:URL:_default' \
+'--jwt-secret=[JWT Secret for the RPC endpoint]:JWT_SECRET:_default' \
+'--rpc-timeout=[Timeout for the RPC request in seconds]:RPC_TIMEOUT:_default' \
+'*--rpc-headers=[Specify custom headers for RPC requests]:RPC_HEADERS:_default' \
+'--color=[The color of the log messages]:COLOR:((auto\:"Intelligently guess whether to use color output (default)"
+always\:"Force color output"
+never\:"Force disable color output"))' \
+'-j+[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--threads=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--jobs=[Number of threads to use. Specifying 0 defaults to the number of logical cores]:THREADS:_default' \
+'--flashbots[Use the Flashbots RPC URL with fast mode (<https\://rpc.flashbots.net/fast>)]' \
+'(-q --quiet)*-v[Verbosity level of the log messages.]' \
+'(-q --quiet)*--verbosity[Verbosity level of the log messages.]' \
+'-q[Do not print log messages]' \
+'--quiet[Do not print log messages]' \
+'(-q --quiet --color)--json[Format log messages as JSON]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_cast__tx-pool__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:cast-tx-pool-help-command-$line[1]:"
+        case $line[1] in
+            (content)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(content-from)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(inspect)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(status)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
 ;;
 (help)
 _arguments "${_arguments_options[@]}" : \
@@ -8399,7 +9075,7 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
-(4byte-decode)
+(4byte-calldata)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
@@ -8531,11 +9207,23 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
+(remove)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
 (private-key)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
+(public-key)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
 (decrypt-keystore)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(change-password)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
@@ -8614,6 +9302,38 @@ _arguments "${_arguments_options[@]}" : \
 (decode-eof)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
+;;
+(tx-pool)
+_arguments "${_arguments_options[@]}" : \
+":: :_cast__help__tx-pool_commands" \
+"*::: :->tx-pool" \
+&& ret=0
+
+    case $state in
+    (tx-pool)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:cast-help-tx-pool-command-$line[1]:"
+        case $line[1] in
+            (content)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(content-from)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(inspect)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(status)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
 ;;
 (help)
 _arguments "${_arguments_options[@]}" : \
@@ -8802,19 +9522,19 @@ _cast_commands() {
 'impl:Fetch the EIP-1967 implementation for a contract Can read from the implementation slot or the beacon slot' \
 'admin:Fetch the EIP-1967 admin account' \
 'adm:Fetch the EIP-1967 admin account' \
-'4byte:Get the function signatures for the given selector from https\://openchain.xyz' \
-'4:Get the function signatures for the given selector from https\://openchain.xyz' \
-'4b:Get the function signatures for the given selector from https\://openchain.xyz' \
-'4byte-decode:Decode ABI-encoded calldata using https\://openchain.xyz' \
-'4d:Decode ABI-encoded calldata using https\://openchain.xyz' \
-'4bd:Decode ABI-encoded calldata using https\://openchain.xyz' \
-'4byte-event:Get the event signature for a given topic 0 from https\://openchain.xyz' \
-'4e:Get the event signature for a given topic 0 from https\://openchain.xyz' \
-'4be:Get the event signature for a given topic 0 from https\://openchain.xyz' \
-'topic0-event:Get the event signature for a given topic 0 from https\://openchain.xyz' \
-'t0e:Get the event signature for a given topic 0 from https\://openchain.xyz' \
-'upload-signature:Upload the given signatures to https\://openchain.xyz' \
-'ups:Upload the given signatures to https\://openchain.xyz' \
+'4byte:Get the function signatures for the given selector from <https\://openchain.xyz>' \
+'4:Get the function signatures for the given selector from <https\://openchain.xyz>' \
+'4b:Get the function signatures for the given selector from <https\://openchain.xyz>' \
+'4byte-calldata:Decode ABI-encoded calldata using <https\://openchain.xyz>' \
+'4c:Decode ABI-encoded calldata using <https\://openchain.xyz>' \
+'4bc:Decode ABI-encoded calldata using <https\://openchain.xyz>' \
+'4byte-event:Get the event signature for a given topic 0 from <https\://openchain.xyz>' \
+'4e:Get the event signature for a given topic 0 from <https\://openchain.xyz>' \
+'4be:Get the event signature for a given topic 0 from <https\://openchain.xyz>' \
+'topic0-event:Get the event signature for a given topic 0 from <https\://openchain.xyz>' \
+'t0e:Get the event signature for a given topic 0 from <https\://openchain.xyz>' \
+'upload-signature:Upload the given signatures to <https\://openchain.xyz>' \
+'ups:Upload the given signatures to <https\://openchain.xyz>' \
 'pretty-calldata:Pretty print calldata' \
 'pc:Pretty print calldata' \
 'age:Get the timestamp of a block' \
@@ -8893,6 +9613,8 @@ _cast_commands() {
 'selectors:Extracts function selectors and arguments from bytecode' \
 'sel:Extracts function selectors and arguments from bytecode' \
 'decode-eof:Decodes EOF container bytes' \
+'tx-pool:Inspect the TxPool of a node' \
+'tp:Inspect the TxPool of a node' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'cast commands' commands "$@"
@@ -8902,10 +9624,10 @@ _cast__4byte_commands() {
     local commands; commands=()
     _describe -t commands 'cast 4byte commands' commands "$@"
 }
-(( $+functions[_cast__4byte-decode_commands] )) ||
-_cast__4byte-decode_commands() {
+(( $+functions[_cast__4byte-calldata_commands] )) ||
+_cast__4byte-calldata_commands() {
     local commands; commands=()
-    _describe -t commands 'cast 4byte-decode commands' commands "$@"
+    _describe -t commands 'cast 4byte-calldata commands' commands "$@"
 }
 (( $+functions[_cast__4byte-event_commands] )) ||
 _cast__4byte-event_commands() {
@@ -9254,10 +9976,10 @@ _cast__help_commands() {
 'index-erc7201:Compute storage slots as specified by \`ERC-7201\: Namespaced Storage Layout\`' \
 'implementation:Fetch the EIP-1967 implementation for a contract Can read from the implementation slot or the beacon slot' \
 'admin:Fetch the EIP-1967 admin account' \
-'4byte:Get the function signatures for the given selector from https\://openchain.xyz' \
-'4byte-decode:Decode ABI-encoded calldata using https\://openchain.xyz' \
-'4byte-event:Get the event signature for a given topic 0 from https\://openchain.xyz' \
-'upload-signature:Upload the given signatures to https\://openchain.xyz' \
+'4byte:Get the function signatures for the given selector from <https\://openchain.xyz>' \
+'4byte-calldata:Decode ABI-encoded calldata using <https\://openchain.xyz>' \
+'4byte-event:Get the event signature for a given topic 0 from <https\://openchain.xyz>' \
+'upload-signature:Upload the given signatures to <https\://openchain.xyz>' \
 'pretty-calldata:Pretty print calldata' \
 'age:Get the timestamp of a block' \
 'balance:Get the balance of an account in wei' \
@@ -9295,6 +10017,7 @@ _cast__help_commands() {
 'decode-transaction:Decodes a raw signed EIP 2718 typed transaction' \
 'selectors:Extracts function selectors and arguments from bytecode' \
 'decode-eof:Decodes EOF container bytes' \
+'tx-pool:Inspect the TxPool of a node' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'cast help commands' commands "$@"
@@ -9304,10 +10027,10 @@ _cast__help__4byte_commands() {
     local commands; commands=()
     _describe -t commands 'cast help 4byte commands' commands "$@"
 }
-(( $+functions[_cast__help__4byte-decode_commands] )) ||
-_cast__help__4byte-decode_commands() {
+(( $+functions[_cast__help__4byte-calldata_commands] )) ||
+_cast__help__4byte-calldata_commands() {
     local commands; commands=()
-    _describe -t commands 'cast help 4byte-decode commands' commands "$@"
+    _describe -t commands 'cast help 4byte-calldata commands' commands "$@"
 }
 (( $+functions[_cast__help__4byte-event_commands] )) ||
 _cast__help__4byte-event_commands() {
@@ -9812,6 +10535,36 @@ _cast__help__tx_commands() {
     local commands; commands=()
     _describe -t commands 'cast help tx commands' commands "$@"
 }
+(( $+functions[_cast__help__tx-pool_commands] )) ||
+_cast__help__tx-pool_commands() {
+    local commands; commands=(
+'content:Fetches the content of the transaction pool' \
+'content-from:Fetches the content of the transaction pool filtered by a specific address' \
+'inspect:Fetches a textual summary of each transaction in the pool' \
+'status:Fetches the current status of the transaction pool' \
+    )
+    _describe -t commands 'cast help tx-pool commands' commands "$@"
+}
+(( $+functions[_cast__help__tx-pool__content_commands] )) ||
+_cast__help__tx-pool__content_commands() {
+    local commands; commands=()
+    _describe -t commands 'cast help tx-pool content commands' commands "$@"
+}
+(( $+functions[_cast__help__tx-pool__content-from_commands] )) ||
+_cast__help__tx-pool__content-from_commands() {
+    local commands; commands=()
+    _describe -t commands 'cast help tx-pool content-from commands' commands "$@"
+}
+(( $+functions[_cast__help__tx-pool__inspect_commands] )) ||
+_cast__help__tx-pool__inspect_commands() {
+    local commands; commands=()
+    _describe -t commands 'cast help tx-pool inspect commands' commands "$@"
+}
+(( $+functions[_cast__help__tx-pool__status_commands] )) ||
+_cast__help__tx-pool__status_commands() {
+    local commands; commands=()
+    _describe -t commands 'cast help tx-pool status commands' commands "$@"
+}
 (( $+functions[_cast__help__upload-signature_commands] )) ||
 _cast__help__upload-signature_commands() {
     local commands; commands=()
@@ -9829,8 +10582,11 @@ _cast__help__wallet_commands() {
 'verify:Verify the signature of a message' \
 'import:Import a private key into an encrypted keystore' \
 'list:List all the accounts in the keystore default directory' \
+'remove:Remove a wallet from the keystore' \
 'private-key:Derives private key from mnemonic' \
+'public-key:Get the public key for the given private key' \
 'decrypt-keystore:Decrypt a keystore file to get the private key' \
+'change-password:Change the password of a keystore file' \
     )
     _describe -t commands 'cast help wallet commands' commands "$@"
 }
@@ -9838,6 +10594,11 @@ _cast__help__wallet_commands() {
 _cast__help__wallet__address_commands() {
     local commands; commands=()
     _describe -t commands 'cast help wallet address commands' commands "$@"
+}
+(( $+functions[_cast__help__wallet__change-password_commands] )) ||
+_cast__help__wallet__change-password_commands() {
+    local commands; commands=()
+    _describe -t commands 'cast help wallet change-password commands' commands "$@"
 }
 (( $+functions[_cast__help__wallet__decrypt-keystore_commands] )) ||
 _cast__help__wallet__decrypt-keystore_commands() {
@@ -9868,6 +10629,16 @@ _cast__help__wallet__new-mnemonic_commands() {
 _cast__help__wallet__private-key_commands() {
     local commands; commands=()
     _describe -t commands 'cast help wallet private-key commands' commands "$@"
+}
+(( $+functions[_cast__help__wallet__public-key_commands] )) ||
+_cast__help__wallet__public-key_commands() {
+    local commands; commands=()
+    _describe -t commands 'cast help wallet public-key commands' commands "$@"
+}
+(( $+functions[_cast__help__wallet__remove_commands] )) ||
+_cast__help__wallet__remove_commands() {
+    local commands; commands=()
+    _describe -t commands 'cast help wallet remove commands' commands "$@"
 }
 (( $+functions[_cast__help__wallet__sign_commands] )) ||
 _cast__help__wallet__sign_commands() {
@@ -10176,6 +10947,73 @@ _cast__tx_commands() {
     local commands; commands=()
     _describe -t commands 'cast tx commands' commands "$@"
 }
+(( $+functions[_cast__tx-pool_commands] )) ||
+_cast__tx-pool_commands() {
+    local commands; commands=(
+'content:Fetches the content of the transaction pool' \
+'content-from:Fetches the content of the transaction pool filtered by a specific address' \
+'inspect:Fetches a textual summary of each transaction in the pool' \
+'status:Fetches the current status of the transaction pool' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'cast tx-pool commands' commands "$@"
+}
+(( $+functions[_cast__tx-pool__content_commands] )) ||
+_cast__tx-pool__content_commands() {
+    local commands; commands=()
+    _describe -t commands 'cast tx-pool content commands' commands "$@"
+}
+(( $+functions[_cast__tx-pool__content-from_commands] )) ||
+_cast__tx-pool__content-from_commands() {
+    local commands; commands=()
+    _describe -t commands 'cast tx-pool content-from commands' commands "$@"
+}
+(( $+functions[_cast__tx-pool__help_commands] )) ||
+_cast__tx-pool__help_commands() {
+    local commands; commands=(
+'content:Fetches the content of the transaction pool' \
+'content-from:Fetches the content of the transaction pool filtered by a specific address' \
+'inspect:Fetches a textual summary of each transaction in the pool' \
+'status:Fetches the current status of the transaction pool' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'cast tx-pool help commands' commands "$@"
+}
+(( $+functions[_cast__tx-pool__help__content_commands] )) ||
+_cast__tx-pool__help__content_commands() {
+    local commands; commands=()
+    _describe -t commands 'cast tx-pool help content commands' commands "$@"
+}
+(( $+functions[_cast__tx-pool__help__content-from_commands] )) ||
+_cast__tx-pool__help__content-from_commands() {
+    local commands; commands=()
+    _describe -t commands 'cast tx-pool help content-from commands' commands "$@"
+}
+(( $+functions[_cast__tx-pool__help__help_commands] )) ||
+_cast__tx-pool__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'cast tx-pool help help commands' commands "$@"
+}
+(( $+functions[_cast__tx-pool__help__inspect_commands] )) ||
+_cast__tx-pool__help__inspect_commands() {
+    local commands; commands=()
+    _describe -t commands 'cast tx-pool help inspect commands' commands "$@"
+}
+(( $+functions[_cast__tx-pool__help__status_commands] )) ||
+_cast__tx-pool__help__status_commands() {
+    local commands; commands=()
+    _describe -t commands 'cast tx-pool help status commands' commands "$@"
+}
+(( $+functions[_cast__tx-pool__inspect_commands] )) ||
+_cast__tx-pool__inspect_commands() {
+    local commands; commands=()
+    _describe -t commands 'cast tx-pool inspect commands' commands "$@"
+}
+(( $+functions[_cast__tx-pool__status_commands] )) ||
+_cast__tx-pool__status_commands() {
+    local commands; commands=()
+    _describe -t commands 'cast tx-pool status commands' commands "$@"
+}
 (( $+functions[_cast__upload-signature_commands] )) ||
 _cast__upload-signature_commands() {
     local commands; commands=()
@@ -10203,10 +11041,16 @@ _cast__wallet_commands() {
 'i:Import a private key into an encrypted keystore' \
 'list:List all the accounts in the keystore default directory' \
 'ls:List all the accounts in the keystore default directory' \
+'remove:Remove a wallet from the keystore' \
+'rm:Remove a wallet from the keystore' \
 'private-key:Derives private key from mnemonic' \
 'pk:Derives private key from mnemonic' \
+'public-key:Get the public key for the given private key' \
+'pubkey:Get the public key for the given private key' \
 'decrypt-keystore:Decrypt a keystore file to get the private key' \
 'dk:Decrypt a keystore file to get the private key' \
+'change-password:Change the password of a keystore file' \
+'cp:Change the password of a keystore file' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'cast wallet commands' commands "$@"
@@ -10215,6 +11059,11 @@ _cast__wallet_commands() {
 _cast__wallet__address_commands() {
     local commands; commands=()
     _describe -t commands 'cast wallet address commands' commands "$@"
+}
+(( $+functions[_cast__wallet__change-password_commands] )) ||
+_cast__wallet__change-password_commands() {
+    local commands; commands=()
+    _describe -t commands 'cast wallet change-password commands' commands "$@"
 }
 (( $+functions[_cast__wallet__decrypt-keystore_commands] )) ||
 _cast__wallet__decrypt-keystore_commands() {
@@ -10233,8 +11082,11 @@ _cast__wallet__help_commands() {
 'verify:Verify the signature of a message' \
 'import:Import a private key into an encrypted keystore' \
 'list:List all the accounts in the keystore default directory' \
+'remove:Remove a wallet from the keystore' \
 'private-key:Derives private key from mnemonic' \
+'public-key:Get the public key for the given private key' \
 'decrypt-keystore:Decrypt a keystore file to get the private key' \
+'change-password:Change the password of a keystore file' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'cast wallet help commands' commands "$@"
@@ -10243,6 +11095,11 @@ _cast__wallet__help_commands() {
 _cast__wallet__help__address_commands() {
     local commands; commands=()
     _describe -t commands 'cast wallet help address commands' commands "$@"
+}
+(( $+functions[_cast__wallet__help__change-password_commands] )) ||
+_cast__wallet__help__change-password_commands() {
+    local commands; commands=()
+    _describe -t commands 'cast wallet help change-password commands' commands "$@"
 }
 (( $+functions[_cast__wallet__help__decrypt-keystore_commands] )) ||
 _cast__wallet__help__decrypt-keystore_commands() {
@@ -10278,6 +11135,16 @@ _cast__wallet__help__new-mnemonic_commands() {
 _cast__wallet__help__private-key_commands() {
     local commands; commands=()
     _describe -t commands 'cast wallet help private-key commands' commands "$@"
+}
+(( $+functions[_cast__wallet__help__public-key_commands] )) ||
+_cast__wallet__help__public-key_commands() {
+    local commands; commands=()
+    _describe -t commands 'cast wallet help public-key commands' commands "$@"
+}
+(( $+functions[_cast__wallet__help__remove_commands] )) ||
+_cast__wallet__help__remove_commands() {
+    local commands; commands=()
+    _describe -t commands 'cast wallet help remove commands' commands "$@"
 }
 (( $+functions[_cast__wallet__help__sign_commands] )) ||
 _cast__wallet__help__sign_commands() {
@@ -10323,6 +11190,16 @@ _cast__wallet__new-mnemonic_commands() {
 _cast__wallet__private-key_commands() {
     local commands; commands=()
     _describe -t commands 'cast wallet private-key commands' commands "$@"
+}
+(( $+functions[_cast__wallet__public-key_commands] )) ||
+_cast__wallet__public-key_commands() {
+    local commands; commands=()
+    _describe -t commands 'cast wallet public-key commands' commands "$@"
+}
+(( $+functions[_cast__wallet__remove_commands] )) ||
+_cast__wallet__remove_commands() {
+    local commands; commands=()
+    _describe -t commands 'cast wallet remove commands' commands "$@"
 }
 (( $+functions[_cast__wallet__sign_commands] )) ||
 _cast__wallet__sign_commands() {
