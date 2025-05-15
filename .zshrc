@@ -82,7 +82,7 @@ function tree() {
 }
 
 autoload -U +X bashcompinit && bashcompinit
-alias 'dotfiles=/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias 'dotfiles=git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 if [ ! -S $SSH_AUTH_SOCK ]; then
     echo "WARN: SSH_AUTH_SOCK is not socket file"

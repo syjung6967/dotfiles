@@ -24,7 +24,7 @@
 " - git wrapper: vim-fugitive
 " - hint mode: vim-easymotion
 " - language client: ALE / CoC
-" - AI tool: Github Copilot / Codeium
+" - AI tool: Github Copilot / Windsurf
 "
 " Plugins which this vimrc script does NOT use:
 " - Community-driven Vim: Neovim GUIs (e.g. Neovide) / MacVim
@@ -139,10 +139,7 @@ augroup MyAutocommandGroup
   autocmd!
 
   " Overwrite predefined ColorScheme as custom.
-  autocmd ColorScheme * highlight CursorLine term=reverse cterm=none ctermbg=239
-  autocmd ColorScheme * highlight CursorLineNr term=reverse cterm=none ctermbg=239
-  autocmd ColorScheme * highlight CursorColumn term=reverse cterm=none ctermbg=233
-  autocmd ColorScheme * highlight ColorColumn term=reverse cterm=none ctermbg=233
+  "autocmd ColorScheme * highlight CursorLine term=reverse cterm=none ctermbg=239
 
   " Restore all cursor positions in previous editing session.
   " (restore-cursor from usr_05.txt)
@@ -183,7 +180,7 @@ set cursorline cursorlineopt=both
 set cursorcolumn
 
 " Enable highlighting additional screen columns.
-set colorcolumn=81
+"set colorcolumn=81
 "set lines=40 columns=125 " This setting occurs bug on PowerShell.
 
 " Load color scheme.
@@ -548,7 +545,7 @@ imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
 let g:copilot_no_tab_map = v:true
 
 "
-" --- Codeium ------------------------------------------------------------------
+" --- Windsurf -----------------------------------------------------------------
 "
 " <C-]> " clear current suggestion.
 " <M-]> " next suggestion.
