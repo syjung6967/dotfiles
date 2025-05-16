@@ -81,7 +81,6 @@ function tree() {
     find -s $@ | sed 's%[^/]*/%  %g'
 }
 
-autoload -U +X bashcompinit && bashcompinit
 alias 'dotfiles=git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 if [ ! -S $SSH_AUTH_SOCK ]; then

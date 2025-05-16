@@ -119,8 +119,8 @@ cask "mucommander"
 cask "slack"
 
 # Database client
-cask "mongodb-compass"
-cask "mysqlworkbench"
+#cask "mongodb-compass"
+#cask "mysqlworkbench"
 
 # IDE
 cask "visual-studio-code"
@@ -129,5 +129,5 @@ cask "visual-studio-code"
 cask "google-chrome"
 
 # Docker for native environment
-cask "rancher"
+#cask "rancher"
 #cask "podman-desktop"

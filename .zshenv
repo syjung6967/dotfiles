@@ -1,4 +1,5 @@
 export PATH="$PATH:$HOME/go/bin"
 export PATH="$PATH:$HOME/.foundry/bin"
 export PATH="$PATH:$HOME/.version_managers/solc-select"
+export SSH_AUTH_SOCK="/tmp/ssh-agent.sock"
 . "$HOME/.cargo/env"
