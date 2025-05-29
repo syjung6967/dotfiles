@@ -218,7 +218,7 @@ endfunction
 " Install Conquer of Completion (CoC) to support code completion:
 "   git clone -b release https://github.com/neoclide/coc.nvim ~/.vim/pack/git-plugins/start/coc.nvim
 "
-" Install extensions:
+" Install extensions: (extensions can be found at https://www.npmjs.com/search?q=keywords%3Acoc.nvim)
 "   let g:coc_global_extensions = [
 "   \ 'coc-sh',
 "   \ 'coc-go',

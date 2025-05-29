@@ -1,21 +1,10 @@
 " ===============================================
-" vimrc script applicable to TUI Vim / Neovim
+" vimrc script applicable to TUI Neovim
 "
 " Jed, syjung6967@gmail.com.
 "
 " SPDX-License-Identifier: ISC
 " ===============================================
-"
-" First of all, fetch the repository to ~/.vim:
-"   cd ~/.vim
-"   git init
-"   git remote add origin https://github.com/syjung6967/vimrc.git
-"   git fetch origin
-"   git checkout main
-"
-" To load this vimrc script, add the following line to end of your ~/.vimrc:
-"   " Include vimrc file.
-"   source $HOME/.vim/vimrc
 "
 " This vimrc script uses as few plugins as possible to avoid relying on them.
 "
@@ -48,12 +37,8 @@
 "   Use vim's diff mode by running external merge tool (e.g., `git mergetool`).
 "
 " References:
-" POSIX specification for vi
-"   https://pubs.opengroup.org/onlinepubs/9699919799/utilities/vi.html
-" POSIX specification for ex
-"   https://pubs.opengroup.org/onlinepubs/9699919799/utilities/ex.html
-" Vim help files
-"   https://vimhelp.org/
+" Neovim help pages
+"   https://neovim.io/doc/user/ (For vim, https://vimhelp.org/)
 " Neovim features which changed from Vim
 "   https://neovim.io/doc/user/vim_diff.html
 "
@@ -64,14 +49,17 @@
 "
 " vi Command Help Guide
 "   https://www.jeffw.com/vi/vi_help.txt
-" Vim Tips Wiki
-"   https://vim.fandom.com/wiki/Category:VimTip
+" POSIX specification for vi
+"   https://pubs.opengroup.org/onlinepubs/9699919799/utilities/vi.html
+" POSIX specification for ex
+"   https://pubs.opengroup.org/onlinepubs/9699919799/utilities/ex.html
 " ANSI Escape Sequences
 "   https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
 
 "
 " --- simple (but powerful) commands -------------------------------------------
 "
+" gc " Toggle comments.
 " <C-V> $ A <modifiy sth> <Esc> " Add text within visual block on the end of lines.
 " . " Repeat last change, with count replaced with [count].
 " @: " Repeat last command-line [count] times.
@@ -90,7 +78,7 @@
 "
 " :tab {cmd} " Execute {cmd} in new tab.
 " :tabc " close the current tab.
-" :Te " Open netrw directory browser in new tab.
+" :Le / :Te " Open netrw directory browser in left / new tab.
 "
 " Folding
 " zf / zd " Create / Delete a fold.
@@ -125,55 +113,39 @@
 " :tabe +<N>buf " Open N-th buffer in new tab.
 " :tabe # " Undo last accessed tab.
 " :%bdel | e# " Clear all buffers except for the buffer opened at current tab.
-
 "
-" --- miscellaneous ------------------------------------------------------------
-"
+" Miscellaneous
 " - Case-insensitive match for grep: add '\c' to pattern anywhere.
+" - <C-L> " <Cmd>nohlsearch|diffupdate|normal! <C-L><CR>
+" - Neovim embeds and enables editorconfig features by default.
+"   .editorconfig file helps coding styles among various developers and IDEs.
+"   (see https://editorconfig.org/)
+
+" If Vim is running, exit Vim with a message left.
+if !has('nvim')
+  echo "Run Neovim instead."
+  exit
+endif
 
 "
 " --- autocommands -------------------------------------------------------------
 "
 
-augroup MyAutocommandGroup
+" Restore all cursor positions in previous editing session.
+" (restore-cursor from usr_05.txt)
+augroup RestoreCursor
   autocmd!
-
-  " Overwrite predefined ColorScheme as custom.
-  "autocmd ColorScheme * highlight CursorLine term=reverse cterm=none ctermbg=239
-
-  " Restore all cursor positions in previous editing session.
-  " (restore-cursor from usr_05.txt)
-  autocmd BufReadPost *
-  \   if line("'\"") >= 1 && line("'\"") <= line("$") && &filetype !~# 'commit'
-  \ |   execute "normal! g`\""
-  \ | endif
-
-  " Remove trailing whitespaces when the buffer is wrote.
-  let g:remove_trailing_whitespaces = 1
-  autocmd BufWritePre *
-  \   if g:remove_trailing_whitespaces && !&binary && &filetype != 'diff'
-  \ |   keeppatterns %s/\s\+$//ge
-  \ | endif
-
-  " Refresh message line which contains ruler, to hide buffer update message
-  " when chaning tab.
-  autocmd BufEnter * redraw
+  autocmd BufReadPre * autocmd FileType <buffer> ++once
+    \ let s:line = line("'\"")
+    \ | if s:line >= 1 && s:line <= line("$") && &filetype !~# 'commit'
+    \      && index(['xxd', 'gitrebase'], &filetype) == -1
+    \ |   execute "normal! g`\""
+    \ | endif
 augroup END
 
 "
 " --- color scheme -------------------------------------------------------------
 "
-
-" Turn on default syntax highlighting.
-syntax on
-
-" Set number of colors. See color palette from:
-"   https://commons.wikimedia.org/wiki/File:Xterm_256color_chart.svg
-"set t_Co=256
-
-" Draw visual bell at the col 6-7 (which fits line number margin) on the
-" current line instead of beeping.
-"set visualbell t_vb=7[6G🔔8
 
 " Enable highlighting cursor line and screen column.
 set cursorline cursorlineopt=both
@@ -192,9 +164,7 @@ colorscheme desert
 " --- format -------------------------------------------------------------------
 "
 
-set encoding=utf-8
 set fileformats=unix,dos,mac " supported formats
-set nobomb " Remove BOM.
 
 " Preserve eol setting for each file.
 "
@@ -216,9 +186,6 @@ set noswapfile
 set backup backupdir=~/.vim/backup,.
 autocmd BufWritePre *
 \   let &backupext = '-' .. strftime("%F_%T") .. '~' "multiple versions
-
-" Keep oldest version of file.
-"set patchmode=.orig
 
 " Enable persistent undo until poweroff.
 set undofile undodir=/tmp
@@ -251,24 +218,6 @@ set title
 " Set popup menu size.
 set pumwidth=30 pumheight=0
 
-" Show the commands being typed.
-set showcmd
-
-" Always show status line.
-set laststatus=2 statusline=
-let g:modemap = {
-\ 'n': 'NORMAL',
-\ 'v': 'VISUAL',
-\ 'V': 'VISUAL LN',
-\ '': 'VISUAL BLK',
-\ 's': 'SELECT',
-\ 'S': 'SELECT LN',
-\ '': 'SELECT BLK',
-\ 'i': 'INSERT',
-\ 'R': 'REPLACE',
-\ 'c': 'COMMAND',
-\}
-
 " Configure status line.
 set statusline+=%F " Full path to file name (%F), file name only (%t)
 set statusline+=%m " modified flag
@@ -279,21 +228,13 @@ set statusline+=\ %r " read only flag
 
 set statusline+=%= " left/right separator
 
-set statusline+=\ %{g:modemap[mode()]} " mode
 set statusline+=\ %{&expandtab?'SPC':'TAB'} " indentation style
 set statusline+=\ %{&tabstop}SPC " tab spacing
-set statusline+=\ %{g:remove_trailing_whitespaces?'␡':'\ '} " auto-remove trailing whitespaces
 
 set statusline+=\ %10(%l:%v%) " cursor line:column position
 set statusline+=\ [%P] " percent through file (always 3 in length)
 set statusline+=\ ≡
 set statusline+=\ %LL\ %{wordcount().words}W " total lines and words in the current buffer
-
-" Disable showing ruler at bottom right. (Default ruler format: %l,%c%V%=%P)
-set noruler
-
-" Disable showing the current mode message.
-set noshowmode
 
 " Change the style for hit-enter prompts caused by file messages.
 " - a: shorten buffer related info.
@@ -307,6 +248,10 @@ set shortmess=aTIc
 " - g<Tab>: go to last accessed tab.
 " - :tabs: List the tab pages and the windows they contain.
 set showtabline=2
+
+" Set number of screen lines to use for the command-line.
+" This keeps message from being truncated.
+set cmdheight=3
 
 " Set netrw directory browser.
 let g:netrw_liststyle=3 " tree style listing
@@ -331,50 +276,8 @@ let g:netrw_banner=0 " disable banner
 " 2. Command key (<D-...>) does not work!
 "     Command key only works on MacVim.
 
-" Fix arrow key input.
-noremap <Esc>OA <Up>
-noremap! <Esc>OA <Up>
-noremap <Esc>OB <Down>
-noremap! <Esc>OB <Down>
-noremap <Esc>OC <Right>
-noremap! <Esc>OC <Right>
-noremap <Esc>OD <Left>
-noremap! <Esc>OD <Left>
-
-" Disable displaying command-line window and recording commands.
-nnoremap q <Nop>
-
-" Toggle displaying line numbers and tab indicator.
-" Also, make vim clipboard-friendly.
-nnoremap <silent> <F1> :set invnumber invrelativenumber invlist invpaste<CR>
-
-" Reload vimrc and save the current session to current directory.
-" TODO: "execute" via map commands does not work if v:this_session is empty
-"       so manual execution is required to create a new session.
-nnoremap <F10>
-\ :source $MYVIMRC<CR>
-\ :execute 'mksession! ' . v:this_session<CR>
-
-" Turn off highlighting search pattern ten redraw screen forcely.
-nnoremap <silent> <C-L> :set nohlsearch<CR>:redraw!<CR>
-
-" Turn on highlighting search pattern then searching.
-nnoremap n :set hlsearch<CR>n
-nnoremap N :set hlsearch<CR>N
-
-" Toggle netrw directory browser.
-nnoremap <F3> :Lexplore<CR>
-
-" Toggle indentation style.
-nnoremap <silent><S-Tab> :set invexpandtab<CR>
-
-" Toggle auto-remove trailing whitespaces.
-nnoremap <silent><C-_> :let g:remove_trailing_whitespaces=!g:remove_trailing_whitespaces<CR>
-
-" While auto completion, make <Tab> to select next candidate.
-inoremap <expr> <Tab> pumvisible() ? "\<C-N>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-P>" : "\<S-Tab>"
-inoremap <expr> <ESC>[Z pumvisible() ? "\<C-P>" : "\<S-Tab>"
+" Save the current session to ~/sessions directory.
+nmap <F2> :execute "mksession! " .. v:this_session<CR>:source ~/sessions/
 
 " Copy text to clipboard in visual mode.
 "vnoremap <silent> <Leader>c "+y
@@ -384,23 +287,13 @@ vnoremap <silent> <C-C> "+y
 " --- mechanics ----------------------------------------------------------------
 "
 
-set wrap nolinebreak
 set nofoldenable
-set history=10000 undolevels=1000
 set list listchars=tab:┊\ ,trail:·,extends:»
 
 " Set threshold for reporting number of lines changed.
 set report=0
 
-" Set highlighting for search results.
-set hlsearch incsearch
-match Todo /\s\+$/ " Highlight trailing whitespaces.
-
-" Set maximum amount of memory (in Kbyte) to use for pattern matching.
-set maxmempattern=5000
-
 " Set indentation style.
-set autoindent indentexpr=""
 set noexpandtab " TAB (with 'no'); SPACE (without 'no')
 set nosmarttab
 set tabstop=8 " Number of spaces that a <Tab> in the file counts for.
@@ -411,9 +304,6 @@ set notimeout ttimeout
 
 " Enable command completion.
 set wildmenu wildmode=list:longest wildoptions=pum,tagfile
-
-" Enable mouse on Normal mode and Visual mode. (Helpful for non-vimer)
-set mouse=nv
 
 " Enable filetype plugins.
 filetype plugin indent on
@@ -427,34 +317,9 @@ set matchpairs+=<:>
 " Do not influence to words typed before entering insert mode.
 set backspace=""
 
-" Add just one marginal space when joining sentences.
-set nojoinspaces
-
-" Keep cursor in the same column (if possible).
-set nostartofline
-
-" Control the behavior when switching between buffers.
-set switchbuf=uselast
-
-" Do not restore options and mappings when restoring session.
-set sessionoptions-=options
-
 " Change current working directory to where accessed file is located.
+" Note: When this option is on some plugins may not work.
 set autochdir
-
-" Set program to use for grepping.
-set grepprg=rg\ --vimgrep\ --hidden
-
-" Make the jumplist behave like the tagstack.
-"set jumpoptions=stack
-
-"
-" --- menu ---------------------------------------------------------------------
-"
-
-source $VIMRUNTIME/menu.vim
-set wildcharm=<C-Z>
-map <F4> :emenu <C-Z>
 
 "
 " --- hint mode ----------------------------------------------------------------
@@ -491,7 +356,7 @@ nmap <Leader>W <Plug>(easymotion-overwin-w)
 "
 " Weak points for CoC:
 "
-" - support for external formatter (e.g., gofmt, forge)
+" - support for external formatter (e.g., gofmt, forge are not supported)
 "
 " Exuberant Ctags (e-ctags) and its successor Universal Ctags (u-ctags) support
 " modern languages but the rise of LSP has made ctags less powerful.
@@ -509,9 +374,6 @@ nmap <Leader>W <Plug>(easymotion-overwin-w)
 "
 " Fortunately tag stack can be modifiable by using settagstack() so the tags
 " can also be stacked without tagfunc option.
-
-" ALE (fixer & linter & completion)
-"source $HOME/.vim/ale.vim
 
 " ALE (fixer)
 source $HOME/.vim/ale-fixer-only.vim
@@ -533,20 +395,23 @@ source $HOME/.vim/coc.vim
 " --- Github Copilot -----------------------------------------------------------
 "
 
-" Remap the default key bindings.
-" Meta key does not support on Mac OS X.
-inoremap <C-A> <Plug>(copilot-previous)
-inoremap <C-S> <Plug>(copilot-next)
+" Default key bindings:
+" <M-]> " <Plug>(copilot-next)
+" <M-[> " <Plug>(copilot-previous)
+" <M-Bslash> " <Plug>(copilot-suggest)
+" <M-Right> " <Plug>(copilot-accept-word)
+" <M-C-Right> " <Plug>(copilot-accept-line)
 
 " Remap the default key binding <Tab> to <C-J>.
 " <Tab> is more used for indentation than completion.
 " <C-J> is rarely used for line feed.
-imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
 let g:copilot_no_tab_map = v:true
+"imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
 
 "
 " --- Windsurf -----------------------------------------------------------------
 "
+" Default key bindings:
 " <C-]> " clear current suggestion.
 " <M-]> " next suggestion.
 " <M-[> " previous suggestion.
@@ -580,36 +445,6 @@ let g:copilot_no_tab_map = v:true
 " :cnew [n] / :lnew [n]
 " :[n]chi / [n]lhi
 packadd! cfilter
-
-" Enable built-in comment plugin. (vim9script)
-" gc " Toggle comments.
-" gcc " Toggle comments for the current line.
-"packadd! comment
-
-" Enable optional built-in dvorak plugin. (this effects on texting only)
-" ,d " Enable dvorak mode.
-" ,q " Disable dvorak mode.
-"packadd! dvorak
-
-" Enable optional built-in editexisting plugin. (only available when vim is
-" compiled with the +clientserver feature)
-"
-" This plugin brings the existing session when 1. same file is opened or 2.
-" same file is modified and its swap file exists.
-"packadd! editexisting
-
-" Enable built-in editorconfig plugin.
-"
-" .editorconfig file helps coding styles among various developers and IDEs.
-" (see https://editorconfig.org/)
-"
-" Neovim embeds and enables editorconfig features by default.
-if !has('nvim')
-  packadd! editorconfig
-endif
-
-" Enable built-in helptoc plugin.
-"packadd! helptoc
 
 " Enable optional built-in justify plugin.
 " function Justify( [ textwidth [, maxspaces [, indent] ] ] )

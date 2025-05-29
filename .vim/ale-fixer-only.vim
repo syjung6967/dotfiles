@@ -16,13 +16,10 @@ let g:ale_linters = {}
 " A mapping from filetypes to "List" values for functions for fixing errors.
 " Run :ALEFixSuggest to check which fixers can be used.
 let g:ale_fixers = {
-\  '*': ["biome"],
+\  '*': ["biome", "remove_trailing_lines", "trim_whitespace"],
 \  'go': ["gofmt", "goimports"],
 \  'solidity': ["forge"],
 \}
 
 " Run :ALEFix to fix files when you save them.
 let g:ale_fix_on_save = 1
-
-" Disable all fixers if you don't want them.
-nnoremap <F9> :let g:ale_fix_on_save = !g:ale_fix_on_save<CR>
