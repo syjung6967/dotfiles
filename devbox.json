@@ -5,7 +5,10 @@
     "git@latest",
     "neovim@latest",
     "openssh@latest",
-    "delta@latest"
+    "delta@latest",
+    "jq@latest",
+    "yq@latest",
+    "biome@latest"
   ],
   "shell": {
     "init_hook": [
