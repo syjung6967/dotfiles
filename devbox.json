@@ -27,8 +27,6 @@
     "grpcurl@latest",
     "pigz@latest",
     "tmux@latest",
-    "bash@latest",
-    "bash-completion@latest",
     "universal-ctags@latest",
     "llvm@latest",
     "lld@latest",
@@ -39,6 +37,7 @@
     "init_hook": [
       "alias vi=nvim",
       "alias vim=nvim",
+      "export XDG_CONFIG_HOME=\"$DEVBOX_PROJECT_ROOT/.config\"",
     ],
     "scripts": {
       "test": [

@@ -1,0 +1,14 @@
+{
+	"extensions.updateCheck": "weekly",
+
+	"coc.source.file.ignoreHidden": false,
+	"diagnostic.checkCurrentLine": true,
+
+	"go.checkForUpdates": "disabled",
+	"go.goplsPath": "~/.local/share/devbox/global/default/.devbox/nix/profile/default/bin/gopls",
+
+	"rust-analyzer.server.path": "~/.cargo/bin/rust-analyzer",
+	"workspace.ignoredFolders": ["~", "~/.cargo/**", "~/.rustup/**"],
+
+	"@nomicfoundation/coc-solidity.telemetry": false
+}
