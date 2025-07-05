@@ -8,16 +8,42 @@
     "delta@latest",
     "jq@latest",
     "yq@latest",
-    "biome@latest"
+    "biome@latest",
+    "yubikey-manager@latest",
+    "yubico-piv-tool@latest",
+    "shellcheck@latest",
+    "nodejs@latest",
+    "go_1_24@latest",
+    "gopls@latest",
+    "goimports-reviser@latest",
+    "rustc@latest",
+    "cargo@latest",
+    "rust-analyzer@latest",
+    "foundry@latest",
+    "solc-select@latest",
+    "htop@latest",
+    "viddy@latest",
+    "websocat@latest",
+    "grpcurl@latest",
+    "pigz@latest",
+    "tmux@latest",
+    "bash@latest",
+    "bash-completion@latest",
+    "universal-ctags@latest",
+    "llvm@latest",
+    "lld@latest",
+    "clang-tools@latest",
+    "clang@latest",
   ],
   "shell": {
     "init_hook": [
-      "echo 'Welcome to devbox!' > /dev/null"
+      "alias vi=nvim",
+      "alias vim=nvim",
     ],
     "scripts": {
       "test": [
-        "echo \"Error: no test specified\" && exit 1"
-      ]
-    }
-  }
+        "echo \"Error: no test specified\" && exit 1",
+      ],
+    },
+  },
 }

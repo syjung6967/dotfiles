@@ -1,20 +1,14 @@
 # Dotfiles
+
 **Use at your own risk.**
 
-Dotfiles do not specify a desktop environment and window manager becuase none is compatible with all operating systems (WSL, Mac OS, Linux).
+The dotfiles needs aid of [Devbox](https://www.jetify.com/devbox) to isolate development environment and to reduce onboarding time.
+- Devbox leverages [Nixpkgs](https://github.com/NixOS/nixpkgs) as package collection.
+  - Native Nix is not intuitive for me and it requires too much configuration.
 
-For the same reason, dotfiles do not specify a terminal emulator.
+The dotfiles do not specify a desktop environment and window manager becuase none is compatible with all operating systems (WSL, Mac OS, Linux, BSD).
 
-`dotfiles` alias is equivalent to `git` except for working directory is set to `$HOME`.
-
-## Packages
-* Shell: zsh, bash
-* Editor: Neovim (using vim compatible scripts as possible)
-* Multiplexer: tmux
-* System monitor: htop
-* File manager: Netrw, [muCommander](https://www.mucommander.com/)
-* Package manager: [Homebrew](https://brew.sh/)
-  * [Nix](https://nixos.org/) could be an alternative, but it is not intuitive for me and it requires too much configuration.
+For the same reason, the dotfiles do not specify a terminal emulator.
 
 ## Installation
 Check Git is set up on your machine before installation.
@@ -22,45 +16,97 @@ Check Git is set up on your machine before installation.
 Run bootstrap first.
 
 ```sh
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-echo !! >> ~/.zshrc
+# Install `bash` and `bash-completion`.
 
-# Init git repo.
-mkdir ~/.dotfiles
-dotfiles init
+# Install Devbox.
+curl -fsSL https://get.jetify.com/devbox | bash
 
-# Overwrite dotfiles.
-dotfiles remote add origin https://github.com/syjung6967/dotfiles.git
-dotfiles pull
-dotfiles reset --hard origin/main
-dotfiles checkout main
+# Make shell to use global profile.
+echo 'eval "$(devbox global shellenv --init-hook)"' < ~/.bashrc
 
-# Update submodules.
-dotfiles submodule update --init
+# Pull global config.
+#
+# WARN: existing global profile on local will be removed.
+devbox global pull <repo>
 ```
 
-Install Homebrew and all packages from bundle file.
-```sh
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile # MacOS, zsh
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.bash_profile # MacOS, bash
-echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zshrc # Linux, zsh
-echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.bashrc # Linux, bash
-
-brew analytics off
-
-brew bundle --global
-```
-
-## Post Installation
+The dotfiles is located on `$DEVBOX_PROJECT_ROOT`.
 
 ## Update dotfiles
-```sh
-dotfiles add <new files>
-dotfiles submodule add <repo> <path>
-dotfiles rm <files or submodules>
 
-dotfiles commit -a
-dotfiles push origin main
-```
+Run `devbox global push <repo>` to update the dotfiles same as local.
+
+## Packages
+
+Version control system
+- `git`
+
+SSH client
+- `openssh`
+  - `dropbear` could be a good replacement but I do not prefer it due to lack of some OpenSSH compatibility.
+
+Security token
+- YubiKey: [List of known vendors and products](https://github.com/Yubico/libfido2/blob/main/udev/fidodevs)
+  - `yubikey-manager`
+  - `yubico-piv-tool`
+
+Text processor
+- `ripgrep`: grep in parallel
+- `jq`
+- `yq`
+- `biome`: an replacement of `prettier` ([Differences with Prettier](https://biomejs.dev/formatter/differences-with-prettier/))
+
+Pager
+- `delta`
+
+Language support
+- Ctags
+  - `universal-ctags`
+- Shell scripts
+  - `shellcheck`
+- C/C++/Obj-C
+  - `clang`
+- Node.js
+  - `nodejs`: for running LSP server
+- Go
+  - `go_1_24`
+  - `gopls`
+  - `goimports-reviser`
+- Rust
+  - `rustc`
+  - `cargo`
+  - `rust-analyzer`
+- Solidity
+  - `foundry`
+  - `solc-select`
+- Cross compile
+  - `llvm`
+  - `lld`
+  - `clang-tools`
+
+Terminal multiplexer
+- `tmux`
+
+Text editor
+- `neovim`
+  - `helix` could be a good replacement but I do not prefer it due to lack of plugin system.
+
+Process viewer
+- `htop`
+  - `htop` can replace pstree by using tree view (press F5 key).
+  - For more process details, use `ps`.
+
+File manager
+  - None (use Netrw in nvim)
+
+Periodic monitoring
+- `viddy`
+  - Use `viddy` to support paging and time machine mode.
+  - For tracking file changes in real-time, use `less +F` or `tail -f`.
+
+Communication protocol
+- `websocat`
+- `grpcurl`
+
+Parallel gzip (de)compression
+- `pigz`
