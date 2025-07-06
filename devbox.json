@@ -38,6 +38,7 @@
       "alias vi=nvim",
       "alias vim=nvim",
       "export XDG_CONFIG_HOME=\"$DEVBOX_PROJECT_ROOT/.config\"",
+      "export BASH_COMPLETION_COMPAT_DIR=\"$DEVBOX_PROJECT_ROOT/.config/bash_completion.d\"",
     ],
     "scripts": {
       "test": [

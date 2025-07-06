@@ -41,7 +41,7 @@ call plug#begin()
 Plug 'tpope/vim-fugitive'
 
 " Version control system (VCS) diffs
-Plug 'mhinz/vim-signify'
+Plug 'airblade/vim-gitgutter'
 
 " Hint mode
 Plug 'easymotion/vim-easymotion'
@@ -133,21 +133,21 @@ set foldcolumn=1
 set title
 
 " Configure status line.
-"set statusline+=%F " Full path to file name (%F), file name only (%t)
-"set statusline+=%m " modified flag
-"set statusline+=\ [%{&fileencoding},%{&fileformat}]
-"set statusline+=\ [%{len(&filetype)?&filetype:'none'}]
-"set statusline+=\ %r " read only flag
-"
-"set statusline+=%= " left/right separator
-"
-"set statusline+=\ %{&expandtab?'SPC':'TAB'} " indentation style
-"set statusline+=\ %{&tabstop}SPC " tab spacing
-"
-"set statusline+=\ %10(%l:%v%) " cursor line:column position
-"set statusline+=\ [%P] " percent through file (always 3 in length)
-"set statusline+=\ ≡
-"set statusline+=\ %LL\ %{wordcount().words}W " total lines and words in the current buffer
+set statusline+=%F " Full path to file name (%F), file name only (%t)
+set statusline+=%m " modified flag
+set statusline+=\ [%{&fileencoding},%{&fileformat}]
+set statusline+=\ [%{len(&filetype)?&filetype:'none'}]
+set statusline+=\ %r " read only flag
+
+set statusline+=%= " left/right separator
+
+set statusline+=\ %{&expandtab?'SPC':'TAB'} " indentation style
+set statusline+=\ %{&tabstop}SPC " tab spacing
+
+set statusline+=\ %10(%l:%v%) " cursor line:column position
+set statusline+=\ [%P] " percent through file (always 3 in length)
+set statusline+=\ ≡
+set statusline+=\ %LL\ %{wordcount().words}W " total lines and words in the current buffer
 
 " Change the style for hit-enter prompts caused by file messages.
 " - a: shorten buffer related info.
@@ -164,7 +164,7 @@ set showtabline=2
 
 " Set number of screen lines to use for the command-line.
 " This keeps message from being truncated.
-"set cmdheight=3
+set cmdheight=2
 
 " Set netrw directory browser.
 let g:netrw_liststyle=3 " tree style listing

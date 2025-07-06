@@ -32,6 +32,14 @@ devbox global pull <repo>
 
 The dotfiles is located on `$DEVBOX_PROJECT_ROOT`.
 
+Add the scripts to bashrc for using the dotfiles.
+
+```sh
+eval "$(devbox global shellenv --init-hook)"
+
+. $DEVBOX_PROJECT_ROOT/.config/bash_completion
+```
+
 ## Update dotfiles
 
 Run `devbox global push <repo>` to update the dotfiles same as local.

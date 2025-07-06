@@ -1,0 +1,12 @@
+# Load bash completion scripts from nixpkgs
+. /nix/store/rzqvhv48m3nh8g3j4k6jmz6yqy8apr95-git-2.49.0/share/git/contrib/completion/git-completion.bash
+
+# Load scripts in bash_completion.d
+for f in $DEVBOX_PROJECT_ROOT/.config/bash_completion.d/*; do
+    . "$f"
+done
+
+# Generate bash completion scripts
+#
+# devbox completion bash
+# cast completions bash
