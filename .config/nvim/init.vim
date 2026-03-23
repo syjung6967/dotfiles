@@ -18,7 +18,7 @@
 " - Rich status line and tab line: vim-airline / lightline.vim / vim-flagship
 "   Maybe necessary if you use multiple status lines and tab lines.
 " - Fuzzy finder: fzf / ctrlp
-"   Use :e **/<file> for files and :grep <pattern> <file> for contents.
+"   Use :e **/<file> or :find for files and :grep <pattern> <file> for contents.
 "   See cfilter plugin for more usage.
 " - Review tool: Diffview
 "   Use vim's diff mode by running external merge tool (e.g., `git mergetool`).
@@ -50,7 +50,7 @@ Plug 'easymotion/vim-easymotion'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " AI coding assistant
-Plug 'Exafunction/windsurf.vim'
+"Plug 'Exafunction/windsurf.vim'
 
 call plug#end()
 
@@ -72,7 +72,7 @@ augroup RestoreCursor
 augroup END
 
 " Remove trailing whitespaces when the buffer is wrote.
-autocmd BufWritePre * :%s/\s\+$//e
+"autocmd BufWritePre * :%s/\s\+$//e
 
 "
 " --- color scheme -------------------------------------------------------------
@@ -85,7 +85,8 @@ set cursorcolumn
 " Load color scheme.
 "
 " Screenshots: https://github.com/vim/colorschemes/wiki/Remake-sampler-%E2%80%94-256-colors
-colorscheme sorbet
+"colorscheme sorbet
+colorscheme murphy
 
 "
 " --- format -------------------------------------------------------------------
@@ -115,7 +116,7 @@ set undofile
 "
 " POSIX behaves unexpectedly.
 " For example, copying unicode characters using "+y does not work.
-language en_US.UTF-8
+"language en_US.UTF-8
 
 " Set line numbers.
 set number relativenumber numberwidth=6
@@ -183,11 +184,13 @@ nmap <F2> :execute "mksession! " .. v:this_session<CR>:source ~/sessions/
 "
 " See clipboard-wsl from provider.txt.
 vnoremap <silent> <C-C> "+y
+" Set-Clipboard can copy non-ascii characters properly, while clip.exe not.
+" But Set-Clipboard does not work with NeoVim so use win32yank instead.
 let g:clipboard = {
   \   'name': 'WslClipboard',
   \   'copy': {
-  \      '+': 'clip.exe',
-  \      '*': 'clip.exe',
+  \      '+': 'win32yank.exe -i --crlf',
+  \      '*': 'win32yank.exe -i --crlf',
   \    },
   \   'paste': {
   \      '+': 'powershell.exe -NoLogo -NoProfile -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
@@ -196,8 +199,13 @@ let g:clipboard = {
   \   'cache_enabled': 0,
   \ }
 
-" Use :tselect instead of :tag
-"nnoremap <C-]> g]
+" Bypass tagfunc for <C-]> and g].
+"
+" N.B., <C-]> and g] mechanic differ to :tag and :tselect respectively
+" although reference manual says they do. The weird behaviors are derived from
+" whether tagfunc is applied or not.
+nnoremap <C-]> :tag <C-R><C-W><CR>
+nnoremap g] :tselect <C-R><C-W><CR>
 
 "
 " --- mechanics ----------------------------------------------------------------
@@ -225,21 +233,26 @@ set backspace=""
 " Note: When this option is on some plugins may not work.
 set autochdir
 
+" Keep the startup directory in 'path'.
+let s:startup_dir = getcwd()
+execute 'set path+=' . fnameescape(s:startup_dir . '/**')
+set path+=/usr/include/x86_64-linux-gnu
+
 "
 " --- hint mode ----------------------------------------------------------------
 "
 
 " Move to character.
 "
-" WARN: DO NOT override 'f', 'F' motion commands because original behavior
-" conflicts when repeating the commands.
 "map <Leader>f <Plug>(easymotion-bd-f)
-"nmap <Leader>f <Plug>(easymotion-overwin-f)
-map <Leader>F <Plug>(easymotion-bd-f)
-nmap <Leader>F <Plug>(easymotion-overwin-f)
+"nmap <Leader>F <Plug>(easymotion-overwin-f)
+"map <Leader>t <Plug>(easymotion-bd-t)
+"nmap <Leader>T <Plug>(easymotion-overwin-t)
+"map <Leader>; <Plug>(easymotion-next)
+"map <Leader>, <Plug>(easymotion-prev)
 
 " Move to word.
-map <Leader>W <Plug>(easymotion-bd-w)
+map <Leader>w <Plug>(easymotion-bd-w)
 nmap <Leader>W <Plug>(easymotion-overwin-w)
 
 "
@@ -250,6 +263,7 @@ let g:coc_global_extensions = [
 \ 'coc-tsserver',
 \ 'coc-json',
 \ 'coc-sh',
+\ 'coc-clangd',
 \ 'coc-go',
 \ 'coc-rust-analyzer',
 \ 'coc-vimlsp',
