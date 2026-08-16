@@ -10,7 +10,7 @@
 	defaultBranch = main
 [core]
 	editor = nvim
-	#pager = delta
+	pager = delta
 [credential]
 	# Credential setup for HTTP(S)-based remotes.
 	#
@@ -37,7 +37,7 @@
 	tool = nvimdiff
 	conflictStyle = zdiff3
 [interactive]
-	#diffFilter = delta --color-only
+	diffFilter = delta --color-only
 
 #
 # Delta pager
@@ -87,5 +87,5 @@
 #
 # Local gitconfig is ignored by .gitignore
 #
-#[include]
-#	path = "~/.gitconfigs/.gitconfig"
+[include]
+	path = "~/.gitconfigs/.gitconfig"
