@@ -1,0 +1,13 @@
+{
+	"extensions.updateCheck": "weekly",
+
+	"coc.source.file.ignoreHidden": false,
+	"diagnostic.checkCurrentLine": true,
+
+	"go.checkForUpdates": "disabled",
+
+	"rust-analyzer.server.path": "~/.cargo/bin/rust-analyzer",
+	"workspace.ignoredFolders": ["~", "~/.cargo/**", "~/.rustup/**"],
+
+	"@nomicfoundation/coc-solidity.telemetry": false
+}
