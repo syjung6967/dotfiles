@@ -24,8 +24,6 @@ ensure() {
 
 ensure "Git"         git         "git --version | awk '{print \$3}'" \
 	"apt_install git"
-ensure "ssh-askpass" ssh-askpass "dpkg-query -W -f='\${Version}' ssh-askpass" \
-	"apt_install ssh-askpass"
 ensure "ripgrep"     rg          "rg --version | awk 'NR==1{print \$2}'" \
 	"apt_install ripgrep"
 ensure "fd"          fdfind      "fdfind --version | awk '{print \$2}'" \
