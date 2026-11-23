@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+ARCH=$(uname -m)
+
 apt_updated=0
 apt_install() {
 	[ "$apt_updated" -eq 1 ] || { sudo apt-get update; apt_updated=1; }
@@ -29,7 +31,7 @@ ensure "ripgrep"     rg          "rg --version | awk 'NR==1{print \$2}'" \
 ensure "fd"          fdfind      "fdfind --version | awk '{print \$2}'" \
 	"apt_install fd-find"
 ensure "Neovim"      nvim        "nvim --version | awk 'NR==1{print \$2}'" \
-	"curl -fLo /tmp/nvim.deb https://github.com/neovim/neovim-releases/releases/download/stable/nvim-linux-x86_64.deb; apt_install /tmp/nvim.deb; rm -f /tmp/nvim.deb"
+	"curl -fLo /tmp/nvim.deb https://github.com/neovim/neovim-releases/releases/download/stable/nvim-linux-${ARCH}.deb; apt_install /tmp/nvim.deb; rm -f /tmp/nvim.deb"
 ensure "Claude Code" claude      "claude --version | awk '{print \$1}'" \
 	"curl -fSL https://claude.ai/install.sh | bash"
 
