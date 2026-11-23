@@ -9,12 +9,9 @@
 -- - File system explorer: NERDTree
 --   Use netrw for simple job or GUI explorer for complicated jobs.
 -- - Glyphs for developer: vim-devicons / lspkind.nvim
---   The icons are confusing to understand.
+--   The icons are not intuitive and too small to read at a glance.
 -- - Rich status line and tab line: vim-airline / lightline.vim / vim-flagship
 --   Maybe necessary if you use multiple status lines and tab lines.
--- - Fuzzy finder: fzf / ctrlp
---   Use :e **/<file> or :find for files and :grep <pattern> <file> for contents.
---   See cfilter plugin for more usage.
 -- - Review tool: Diffview
 --   Use vim's diff mode by running external merge tool (e.g., `git mergetool`).
 
@@ -49,7 +46,7 @@ vim.keymap.set("v", "<C-C>", '"+y', { silent = true })
 -- Or set to 'unnamedplus' to sync with the system clipboard for all operations.
 --
 -- Note:
--- macOS and Windows work out of the box. 
+-- macOS and Windows work out of the box.
 -- Linux requires external tools (e.g., xclip/xsel for X11, or wl-clipboard for Wayland).
 -- See g:clipboard from provider.txt.
 vim.opt.clipboard = "unnamed"
@@ -81,6 +78,9 @@ vim.opt.numberwidth = 6
 -- Set the sign column to automatically adjust its width based on the number of signs.
 vim.opt.signcolumn = "auto:2-9"
 
+-- Draw the fold column.
+vim.opt.foldcolumn = "auto"
+
 -- Enable updating the terminal title with the current file name.
 vim.opt.title = true
 
@@ -96,17 +96,35 @@ vim.opt.cursorcolumn = true
 vim.opt.cursorlineopt = "both"
 
 -- The cursor line will always be in the middle of the window.
-vim.opt.scrolloff=999
+vim.opt.scrolloff = 999
 
 -- Enable List mode to show whitespaces.
 vim.opt.list = true
 
+-- Set threshold for reporting number of lines changed.
+vim.opt.report = 0
+
 -- Set the time of inactivity before triggering the CursorHold event.
 vim.opt.updatetime = 300
 
+vim.api.nvim_create_autocmd('BufEnter', {
+  callback = function(ev)
+    local root = vim.fs.root(ev.buf, '.git')
+    local ok, lines = pcall(vim.fn.readfile, root and root .. '/.git/HEAD' or '', '', 1)
+    vim.b[ev.buf].git_head = ok and lines[1]:gsub('^ref: ', '') or 'N/A'
+  end,
+})
+
+vim.opt.statusline:prepend('(%{exists("b:git_head")?b:git_head:""}) ')
+vim.opt.statusline:append(" %{&expandtab?'SPC':'TAB'}-%{&tabstop}")
+vim.opt.statusline:append(" %y")
+vim.opt.statusline:append(" [%{&fileencoding},%{&fileformat},%{&eol?'eol':'noeol'}]")
 
 
 
+-- Install plugins by using built-in plugin manager.
+-- Remove plugins by executing :lua vim.pack.del({...}).
+--
 -- Plugin list:
 --   https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/editors/vim/plugins/vim-plugin-names
 vim.pack.add({
@@ -123,17 +141,36 @@ vim.pack.add({
   -- Hint mode
   'https://github.com/easymotion/vim-easymotion',
 
+  -- Fuzzy finder
+  'https://github.com/nvim-lua/plenary.nvim',
+  'https://github.com/nvim-telescope/telescope.nvim',
+
   -- AI coding assistant
   'https://github.com/github/copilot.vim',
 
   -- AI coding agent
   'https://github.com/coder/claudecode.nvim',
 })
+vim.pack.update(nil, { offline = true, target = 'lockfile', force = true })
 
 require("claudecode").setup({
   -- Top-level aliases are supported and forwarded to terminal config
   git_repo_cwd = true,
 })
+
+--
+-- --- Telescope ---------------------------------------------------------------
+--
+
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
+vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
+vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
+
+--
+-- --- LSP ---------------------------------------------------------------------
+--
 
 -- Enable Tree-sitter for syntax highlighting and code navigation if the parser is available.
 vim.api.nvim_create_autocmd('FileType', {
@@ -166,7 +203,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 --
--- --- Github Copilot -----------------------------------------------------------
+-- --- Github Copilot ----------------------------------------------------------
 --
 -- Default key bindings:
 -- <M-]> " <Plug>(copilot-next)
@@ -185,7 +222,7 @@ vim.keymap.set('i', '<C-J>', 'copilot#Accept("\\<CR>")', {
 vim.g.copilot_no_tab_map = true
 
 --
--- --- hint mode ----------------------------------------------------------------
+-- --- Hint mode ---------------------------------------------------------------
 --
 
 -- Move to word.
